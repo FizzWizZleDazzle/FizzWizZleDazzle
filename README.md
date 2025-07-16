@@ -22,12 +22,13 @@
   <img src="https://img.shields.io/badge/F%23-378BBA?style=for-the-badge&logo=fsharp&logoColor=white" />
 </p>
 
-
 ---
 
 ### 📈 GitHub Stats
 
 <div align="center">
+  <img src="https://github-readme-activity-graph.vercel.app/graph?username=FizzWizZleDazzle&theme=tokyo-night&area=true" />
+  <br/>
   <img src="https://github-readme-stats.vercel.app/api?username=FizzWizZleDazzle&show_icons=true&theme=tokyonight" alt="Stats" />
   <br/>
   <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=FizzWizZleDazzle&layout=compact&theme=tokyonight" alt="Top Langs" />
