@@ -1,82 +1,58 @@
 [
   {
-    "title": "Bevy Game Engine Extension",
-    "description": "A comprehensive extension for the Bevy game engine that adds advanced rendering capabilities, optimized ECS systems, and cross-platform deployment tools. Features include custom shaders, physics integration, and asset streaming.",
-    "technologies": ["Rust", "Bevy", "WGPU", "Vulkan", "GLSL"],
+    "title": "Bevy Editor",
+    "description": "A comprehensive, extensible, and visual game editor for the Bevy game engine. Provides real-time scene editing, entity-component management, asset Browse, and a plugin-based architecture for custom tooling, all built on Bevy's data-driven ECS principles.",
+    "technologies": ["Rust", "C++", "Bevy", "Qt", "WGPU", "Vulkan"],
     "category": "major",
-    "github": "https://github.com/FizzWizZleDazzle/bevy-engine-ext",
-    "website": null
+    "github": null,
+    "website": "https://editor.fizzwizzledazzle.dev"
   },
   {
-    "title": "Flutter Desktop Framework",
-    "description": "A robust framework for building high-performance desktop applications with Flutter. Includes native window management, system integration APIs, and optimized rendering for desktop environments.",
-    "technologies": ["Flutter", "Dart", "C++", "Platform Channels"],
+    "title": "Taskdown",
+    "description": "A React TypeScript application with a visual Kanban board interface and parser that converts Jira-style Markdown to structured board data and back. Perfect for managing development tasks with seamless integration between human-readable documentation and programmatic task management.",
+    "technologies": ["Typescript", "Rust", "HTML", "CSS", "React", "Markdown"],
     "category": "major",
-    "github": "https://github.com/FizzWizZleDazzle/flutter-desktop-framework",
-    "website": "https://flutter-desktop-demo.example.com"
+    "github": "https://github.com/FizzWizZleDazzle/Taskdown",
+    "website": "https://taskdown.fizzwizzledazzle.dev"
   },
   {
-    "title": "Rust GPU Compute Library",
-    "description": "High-performance GPU compute library written in Rust with CUDA and OpenCL backends. Provides safe abstractions for parallel computing workloads and machine learning operations.",
-    "technologies": ["Rust", "CUDA", "OpenCL", "GPU Programming"],
+    "title": "FastIO",
+    "description": "FastIO is an optimized Java I/O library specifically designed for competitive programming contests like USACO. It provides lightning-fast input/output operations with a simple, clean API that allows you to focus on solving problems rather than dealing with slow I/O.",
+    "technologies": ["Java"],
+    "category": "minor",
+    "github": "https://github.com/FizzWizZleDazzle/FastIO",
+    "website": null
+  },
+  {
+    "title": "Human Typer",
+    "description": "A sophisticated Python application that simulates realistic human typing behavior with natural mistakes, speed fluctuations, and corrections.",
+    "technologies": ["Python", "Tkinter"],
+    "category": "minor",
+    "github": "https://github.com/FizzWizZleDazzle/Human-Typer",
+    "website": null
+  },
+  {
+    "title": "Vellum",
+    "description": "Vellum is a command-line interface (CLI) for orchestrating collectives of AI agents.",
+    "technologies": ["Rust"],
     "category": "major",
-    "github": "https://github.com/FizzWizZleDazzle/rust-gpu-compute",
+    "github": null,
     "website": null
   },
   {
-    "title": "Minimal Window Manager",
-    "description": "A lightweight, keyboard-driven window manager built for efficiency and minimal resource usage. Features tiling layouts, customizable keybindings, and zero bloat philosophy.",
-    "technologies": ["Rust", "X11", "Wayland", "Linux"],
+    "title": "Nivaro",
+    "description": "A centralized platform for managing and growing clubs. Designed as an all-in-one solution, it offers robust tools for membership management, event scheduling with RSVPs, and budget tracking.",
+    "technologies": ["Typescript", "Next.js", "PostgreSQL"],
     "category": "major",
-    "github": "https://github.com/FizzWizZleDazzle/minimal-wm",
-    "website": "https://minimal-wm-demo.example.com"
-  },
-  {
-    "title": "Project Automation Script",
-    "description": "A Python script that automates project setup, dependency management, and development environment configuration. Supports multiple languages and frameworks with templating system.",
-    "technologies": ["Python", "Bash", "JSON", "Templates"],
-    "category": "minor",
-    "github": "https://github.com/FizzWizZleDazzle/project-automation",
+    "github": "https://github.com/FizzWizZleDazzle/Nivaro",
     "website": null
   },
   {
-    "title": "Git Workflow Optimizer",
-    "description": "Command-line tool that optimizes Git workflows by automating common tasks like branch management, commit formatting, and merge conflict resolution.",
-    "technologies": ["Python", "Git", "CLI"],
-    "category": "minor",
-    "github": "https://github.com/FizzWizZleDazzle/git-optimizer",
-    "website": null
-  },
-  {
-    "title": "System Resource Monitor",
-    "description": "Lightweight system monitoring tool with real-time metrics display. Features minimal overhead, customizable alerts, and clean terminal interface.",
-    "technologies": ["Rust", "System APIs", "Terminal UI"],
-    "category": "minor",
-    "github": "https://github.com/FizzWizZleDazzle/sys-monitor",
-    "website": null
-  },
-  {
-    "title": "Code Formatter Collection",
-    "description": "Collection of code formatters and linters for various programming languages. Includes custom rules for consistent code style across projects.",
-    "technologies": ["Python", "Regex", "AST Parsing"],
-    "category": "minor",
-    "github": "https://github.com/FizzWizZleDazzle/code-formatters",
-    "website": "https://formatter-demo.example.com"
-  },
-  {
-    "title": "Build System Generator",
-    "description": "Generates optimized build configurations for different project types. Supports Cargo, CMake, Make, and custom build systems with dependency analysis.",
-    "technologies": ["Python", "YAML", "Build Systems"],
-    "category": "minor",
-    "github": "https://github.com/FizzWizZleDazzle/build-generator",
-    "website": null
-  },
-  {
-    "title": "File Sync Utility",
-    "description": "Fast and reliable file synchronization tool for development environments. Features incremental sync, conflict resolution, and bandwidth optimization.",
-    "technologies": ["Rust", "File Systems", "Networking"],
-    "category": "minor",
-    "github": "https://github.com/FizzWizZleDazzle/file-sync",
-    "website": null
+    "title": "Tensor-Frame",
+    "description": "A high-performance, PyTorch-like tensor library for Rust with support for multiple computational backends.",
+    "technologies": ["Rust", "Cuda", "WGPU"],
+    "category": "major",
+    "github": "https://github.com/TrainPioneers/Tensor-Frame",
+    "website": "https://tensorframe.trainpioneers.com/"
   }
 ]
