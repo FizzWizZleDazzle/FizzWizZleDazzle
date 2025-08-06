@@ -2,7 +2,7 @@
 class DigitalWeaverPortfolio {
     constructor() {
         this.projects = [];
-        this.currentSection = 'about'; // Changed default to about
+        this.currentSection = 'major'; // Default to major projects
         this.canvas = null;
         this.ctx = null;
         this.threads = [];
@@ -168,23 +168,26 @@ class DigitalWeaverPortfolio {
         
         // Update thread positions
         this.threads.forEach(thread => {
-            // Mouse repulsion instead of attraction
+            // Mouse repulsion effect
             const dx = this.mouse.x - thread.x;
             const dy = this.mouse.y - thread.y;
             const distance = Math.sqrt(dx * dx + dy * dy);
             
-            if (distance < 200) { // Repulsion radius
+            if (distance < 200 && distance > 0) { // Repulsion radius
                 const force = (200 - distance) / 200;
-                // Repel away from mouse (negative direction)
-                thread.vx -= (dx / distance) * force * 0.02;
-                thread.vy -= (dy / distance) * force * 0.02;
+                // Strong repulsion away from mouse
+                thread.vx -= (dx / distance) * force //* 0.15;
+                thread.vy -= (dy / distance) * force //* 0.15;
                 
-                // Make threads glow brighter when near mouse
-                thread.opacity = Math.min(1, thread.opacity + force * 0.3);
+                // Make threads glow and pulse when repelled
+                thread.opacity = Math.min(1, thread.opacity + force * 0.5);
+                thread.size = Math.min(4, thread.size + force * 2);
             } else {
-                // Fade back to normal opacity
-                thread.opacity *= 0.99;
+                // Fade back to normal opacity and size
+                thread.opacity *= 0.98;
                 thread.opacity = Math.max(0.3, thread.opacity);
+                thread.size *= 0.98;
+                thread.size = Math.max(1, thread.size);
             }
             
             // Update position with performance-aware movement
@@ -197,10 +200,18 @@ class DigitalWeaverPortfolio {
             thread.vx += (thread.targetX - thread.x) * driftSpeed;
             thread.vy += (thread.targetY - thread.y) * driftSpeed;
             
-            // Apply friction
-            const friction = this.performanceMode === 'low' ? 0.92 : 0.95;
+            // Apply friction with velocity limiting
+            const friction = this.performanceMode === 'low' ? 0.88 : 0.92;
             thread.vx *= friction;
             thread.vy *= friction;
+            
+            // Limit maximum velocity for smoother movement
+            const maxVelocity = 3;
+            const velocity = Math.sqrt(thread.vx * thread.vx + thread.vy * thread.vy);
+            if (velocity > maxVelocity) {
+                thread.vx = (thread.vx / velocity) * maxVelocity;
+                thread.vy = (thread.vy / velocity) * maxVelocity;
+            }
             
             // Boundary wrapping
             if (thread.x < 0) thread.x = this.canvas.width;
@@ -294,7 +305,7 @@ class DigitalWeaverPortfolio {
 
     setupNavigation() {
         const navButtons = document.querySelectorAll('.nav-btn');
-        const sections = document.querySelectorAll('.projects-section, .about-section');
+        const sections = document.querySelectorAll('.projects-section');
 
         navButtons.forEach(btn => {
             btn.addEventListener('click', (e) => {
@@ -312,10 +323,8 @@ class DigitalWeaverPortfolio {
                         section.style.animation = 'fadeInUp 0.6s ease-out forwards';
                         this.currentSection = targetSection;
                         
-                        // Re-render projects if switching to project section
-                        if (targetSection === 'major' || targetSection === 'minor') {
-                            setTimeout(() => this.renderProjects(), 100);
-                        }
+                        // Re-render projects when switching to project section
+                        setTimeout(() => this.renderProjects(), 100);
                     } else {
                         section.classList.add('hidden');
                     }
@@ -355,7 +364,7 @@ class DigitalWeaverPortfolio {
             <div class="modal-project">
                 <div class="modal-header">
                     <h2 class="modal-title">${project.title}</h2>
-                    <div class="modal-category ${project.category}"></div>
+                    <span class="modal-category ${project.category}">${project.category}</span>
                 </div>
                 <p class="modal-description">${project.description}</p>
                 <div class="modal-tech">
@@ -392,10 +401,12 @@ class DigitalWeaverPortfolio {
     }
 
     setupAvatarClick() {
+        // Avatar click functionality removed since about section is integrated
+        return;  
         const weaverAvatar = document.getElementById('weaverAvatar');
         const aboutText = document.getElementById('aboutText');
         
-        if (weaverAvatar && aboutText) {
+        if (false && weaverAvatar && aboutText) {
             weaverAvatar.addEventListener('click', () => {
                 if (this.aboutTextVisible) {
                     // Slide out
@@ -438,7 +449,7 @@ class DigitalWeaverPortfolio {
         });
         
         // Add scroll reveal classes to sections
-        document.querySelectorAll('.projects-section, .about-section').forEach(section => {
+        document.querySelectorAll('.projects-section').forEach(section => {
             section.classList.add('scroll-reveal');
         });
     }

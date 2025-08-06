@@ -33,6 +33,12 @@
                 </div>
                 <h1 class="name">FizzWizZleDazzle</h1>
                 <p class="tagline">Weaving ideas into digital reality</p>
+                <div class="about-inline">
+                    <p>🔭 Currently building <span class="glowing-thread">game engine tools</span> and <span class="glowing-thread">desktop-first apps</span></p>
+                    <p>🧠 Interested in <span class="glowing-thread">Rust</span>, <span class="glowing-thread">Flutter</span>, and <span class="glowing-thread">modern graphics systems</span></p>
+                    <p>🎮 Love clean UI/UX, powerful low-level tooling, and solving hard problems</p>
+                    <p>⚡ Fun fact: I hate bloatware and <em>love</em> minimal, efficient systems</p>
+                </div>
                 <div class="tech-stack">
                     <span class="tech-badge">Rust</span>
                     <span class="tech-badge">Bevy</span>
@@ -43,7 +49,7 @@
                     <a href="https://github.com/FizzWizZleDazzle" target="_blank" class="social-link">
                         <i class="fab fa-github"></i>
                     </a>
-                    <a href="mailto:contact@example.com" class="social-link">
+                    <a href="mailto:arturmisiurev@gmail.com" class="social-link">
                         <i class="fas fa-envelope"></i>
                     </a>
                 </div>
@@ -52,38 +58,14 @@
 
         <!-- Navigation -->
         <nav class="nav">
-            <button class="nav-btn active" data-section="about">About</button>
-            <button class="nav-btn" data-section="major">Major Projects</button>
-            <button class="nav-btn" data-section="minor">Minor Projects</button>
+            <button class="nav-btn active" data-section="major"><span>Major Projects</span></button>
+            <button class="nav-btn" data-section="minor"><span>Minor Projects</span></button>
         </nav>
 
         <!-- Main Content -->
         <main class="main">
-            <!-- About Section - "The Weaver" -->
-            <section class="about-section" id="about">
-                <h2 class="section-title">The Weaver</h2>
-                <div class="about-content">
-                    <div class="weaver-image">
-                        <div class="professional-photo" id="weaverAvatar">
-                            <img src="https://avatars.githubusercontent.com/u/126825095?v=4" 
-                                 alt="FizzWizzleDazzle" 
-                                 class="avatar-large"
-                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                            <div class="avatar-large avatar-fallback" style="display: none;">FWD</div>
-                        </div>
-                    </div>
-                    <div class="about-text" id="aboutText">
-                        <p>🔭 Currently building <span class="glowing-thread">game engine tools</span> and <span class="glowing-thread">desktop-first apps</span></p>
-                        <p>🧠 Interested in <span class="glowing-thread">Rust</span>, <span class="glowing-thread">Flutter</span>, and <span class="glowing-thread">modern graphics systems</span></p>
-                        <p>🎮 Love clean UI/UX, powerful low-level tooling, and solving hard problems</p>
-                        <p>⚡ Fun fact: I hate bloatware and <em>love</em> minimal, efficient systems</p>
-                        <blockquote>"The simpler it looks, the deeper the craft."</blockquote>
-                    </div>
-                </div>
-            </section>
-
             <!-- Projects Section - "The Tapestry" -->
-            <section class="projects-section hidden" id="major">
+            <section class="projects-section" id="major">
                 <h2 class="section-title">The Tapestry - Major Projects</h2>
                 <div class="projects-masonry" id="major-projects">
                     <!-- Projects will be loaded dynamically -->
