@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FizzWizZleDazzle - Portfolio</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Loading Animation -->
+    <div class="loading-screen" id="loading">
+        <div class="weaving-animation">
+            <div class="thread thread-1"></div>
+            <div class="thread thread-2"></div>
+            <div class="thread thread-3"></div>
+        </div>
+        <div class="loading-text">Weaving digital threads...</div>
+    </div>
+
+    <div class="container">
+        <!-- Hero Section - "The Loom" -->
+        <header class="hero-section" id="hero">
+            <canvas class="loom-canvas" id="loomCanvas"></canvas>
+            <div class="interaction-hint">Move your mouse to interact with the threads</div>
+            <div class="hero-content">
+                <div class="profile-image">
+                    <img src="https://avatars.githubusercontent.com/u/126825095?v=4" 
+                         alt="FizzWizZleDazzle" 
+                         class="avatar"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="avatar avatar-fallback" style="display: none;">FWD</div>
+                </div>
+                <h1 class="name">FizzWizZleDazzle</h1>
+                <p class="tagline">Weaving ideas into digital reality</p>
+                <div class="about-inline">
+                    <p>🔭 Currently building <span class="glowing-thread">game engine tools</span> and <span class="glowing-thread">desktop-first apps</span></p>
+                    <p>🧠 Interested in <span class="glowing-thread">Rust</span>, <span class="glowing-thread">Flutter</span>, and <span class="glowing-thread">modern graphics systems</span></p>
+                    <p>🎮 Love clean UI/UX, powerful low-level tooling, and solving hard problems</p>
+                    <p>⚡ Fun fact: I hate bloatware and <em>love</em> minimal, efficient systems</p>
+                </div>
+                <div class="tech-stack">
+                    <span class="tech-badge">Rust</span>
+                    <span class="tech-badge">Bevy</span>
+                    <span class="tech-badge">Flutter</span>
+                    <span class="tech-badge">Python</span>
+                </div>
+                <div class="social-links">
+                    <a href="https://github.com/FizzWizZleDazzle" target="_blank" class="social-link">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="mailto:arturmisiurev@gmail.com" class="social-link">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="nav">
+            <button class="nav-btn active" data-section="major"><span>Major Projects</span></button>
+            <button class="nav-btn" data-section="minor"><span>Minor Projects</span></button>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main">
+            <!-- Projects Section - "The Tapestry" -->
+            <section class="projects-section" id="major">
+                <h2 class="section-title">The Tapestry - Major Projects</h2>
+                <div class="projects-masonry" id="major-projects">
+                    <!-- Projects will be loaded dynamically -->
+                </div>
+            </section>
+
+            <section class="projects-section hidden" id="minor">
+                <h2 class="section-title">The Tapestry - Minor Projects</h2>
+                <div class="projects-masonry" id="minor-projects">
+                    <!-- Projects will be loaded dynamically -->
+                </div>
+            </section>
+        </main>
+
+        <!-- Project Modal -->
+        <div class="modal-overlay" id="projectModal">
+            <div class="modal-content">
+                <button class="modal-close" id="modalClose">&times;</button>
+                <div class="modal-body" id="modalBody">
+                    <!-- Modal content will be populated dynamically -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

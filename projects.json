@@ -1,0 +1,82 @@
+[
+  {
+    "title": "Bevy Game Engine Extension",
+    "description": "A comprehensive extension for the Bevy game engine that adds advanced rendering capabilities, optimized ECS systems, and cross-platform deployment tools. Features include custom shaders, physics integration, and asset streaming.",
+    "technologies": ["Rust", "Bevy", "WGPU", "Vulkan", "GLSL"],
+    "category": "major",
+    "github": "https://github.com/FizzWizZleDazzle/bevy-engine-ext",
+    "website": null
+  },
+  {
+    "title": "Flutter Desktop Framework",
+    "description": "A robust framework for building high-performance desktop applications with Flutter. Includes native window management, system integration APIs, and optimized rendering for desktop environments.",
+    "technologies": ["Flutter", "Dart", "C++", "Platform Channels"],
+    "category": "major",
+    "github": "https://github.com/FizzWizZleDazzle/flutter-desktop-framework",
+    "website": "https://flutter-desktop-demo.example.com"
+  },
+  {
+    "title": "Rust GPU Compute Library",
+    "description": "High-performance GPU compute library written in Rust with CUDA and OpenCL backends. Provides safe abstractions for parallel computing workloads and machine learning operations.",
+    "technologies": ["Rust", "CUDA", "OpenCL", "GPU Programming"],
+    "category": "major",
+    "github": "https://github.com/FizzWizZleDazzle/rust-gpu-compute",
+    "website": null
+  },
+  {
+    "title": "Minimal Window Manager",
+    "description": "A lightweight, keyboard-driven window manager built for efficiency and minimal resource usage. Features tiling layouts, customizable keybindings, and zero bloat philosophy.",
+    "technologies": ["Rust", "X11", "Wayland", "Linux"],
+    "category": "major",
+    "github": "https://github.com/FizzWizZleDazzle/minimal-wm",
+    "website": "https://minimal-wm-demo.example.com"
+  },
+  {
+    "title": "Project Automation Script",
+    "description": "A Python script that automates project setup, dependency management, and development environment configuration. Supports multiple languages and frameworks with templating system.",
+    "technologies": ["Python", "Bash", "JSON", "Templates"],
+    "category": "minor",
+    "github": "https://github.com/FizzWizZleDazzle/project-automation",
+    "website": null
+  },
+  {
+    "title": "Git Workflow Optimizer",
+    "description": "Command-line tool that optimizes Git workflows by automating common tasks like branch management, commit formatting, and merge conflict resolution.",
+    "technologies": ["Python", "Git", "CLI"],
+    "category": "minor",
+    "github": "https://github.com/FizzWizZleDazzle/git-optimizer",
+    "website": null
+  },
+  {
+    "title": "System Resource Monitor",
+    "description": "Lightweight system monitoring tool with real-time metrics display. Features minimal overhead, customizable alerts, and clean terminal interface.",
+    "technologies": ["Rust", "System APIs", "Terminal UI"],
+    "category": "minor",
+    "github": "https://github.com/FizzWizZleDazzle/sys-monitor",
+    "website": null
+  },
+  {
+    "title": "Code Formatter Collection",
+    "description": "Collection of code formatters and linters for various programming languages. Includes custom rules for consistent code style across projects.",
+    "technologies": ["Python", "Regex", "AST Parsing"],
+    "category": "minor",
+    "github": "https://github.com/FizzWizZleDazzle/code-formatters",
+    "website": "https://formatter-demo.example.com"
+  },
+  {
+    "title": "Build System Generator",
+    "description": "Generates optimized build configurations for different project types. Supports Cargo, CMake, Make, and custom build systems with dependency analysis.",
+    "technologies": ["Python", "YAML", "Build Systems"],
+    "category": "minor",
+    "github": "https://github.com/FizzWizZleDazzle/build-generator",
+    "website": null
+  },
+  {
+    "title": "File Sync Utility",
+    "description": "Fast and reliable file synchronization tool for development environments. Features incremental sync, conflict resolution, and bandwidth optimization.",
+    "technologies": ["Rust", "File Systems", "Networking"],
+    "category": "minor",
+    "github": "https://github.com/FizzWizZleDazzle/file-sync",
+    "website": null
+  }
+]
