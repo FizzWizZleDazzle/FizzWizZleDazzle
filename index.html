@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FizzWizZleDazzle - Portfolio</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="profile-section">
+                <div class="profile-image">
+                    <div class="avatar">FWD</div>
+                </div>
+                <h1 class="name">FizzWizZleDazzle</h1>
+                <p class="tagline">Building game engine tools & desktop-first apps</p>
+                <div class="tech-stack">
+                    <span class="tech-badge">Rust</span>
+                    <span class="tech-badge">Bevy</span>
+                    <span class="tech-badge">Flutter</span>
+                    <span class="tech-badge">Python</span>
+                </div>
+                <div class="social-links">
+                    <a href="https://github.com/FizzWizZleDazzle" target="_blank" class="social-link">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="mailto:contact@example.com" class="social-link">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="nav">
+            <button class="nav-btn active" data-section="major">Major Projects</button>
+            <button class="nav-btn" data-section="minor">Minor Projects</button>
+            <button class="nav-btn" data-section="about">About</button>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main">
+            <!-- Projects Section -->
+            <section class="projects-section" id="major">
+                <h2 class="section-title">Major Projects</h2>
+                <div class="projects-grid" id="major-projects">
+                    <!-- Projects will be loaded dynamically -->
+                </div>
+            </section>
+
+            <section class="projects-section hidden" id="minor">
+                <h2 class="section-title">Minor Projects</h2>
+                <div class="projects-grid" id="minor-projects">
+                    <!-- Projects will be loaded dynamically -->
+                </div>
+            </section>
+
+            <!-- About Section -->
+            <section class="about-section hidden" id="about">
+                <h2 class="section-title">About Me</h2>
+                <div class="about-content">
+                    <div class="about-text">
+                        <p>🔭 Currently building <strong>game engine tools</strong> and <strong>desktop-first apps</strong></p>
+                        <p>🧠 Interested in <strong>Rust</strong>, <strong>Flutter</strong>, and <strong>modern graphics systems</strong></p>
+                        <p>🎮 Love clean UI/UX, powerful low-level tooling, and solving hard problems</p>
+                        <p>⚡ Fun fact: I hate bloatware and <em>love</em> minimal, efficient systems</p>
+                        <blockquote>"The simpler it looks, the deeper the craft."</blockquote>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
