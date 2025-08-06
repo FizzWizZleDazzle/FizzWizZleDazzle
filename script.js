@@ -58,8 +58,35 @@ class DigitalWeaverPortfolio {
         this.resizeCanvas();
         this.initializeThreads();
         
+        // Hide interaction hint after first interaction
+        let hasInteracted = false;
+        const hint = document.querySelector('.interaction-hint');
+        
         window.addEventListener('resize', () => this.resizeCanvas());
-        this.canvas.addEventListener('mousemove', (e) => this.updateMouse(e));
+        this.canvas.addEventListener('mousemove', (e) => {
+            this.updateMouse(e);
+            if (!hasInteracted && hint) {
+                hint.style.opacity = '0';
+                setTimeout(() => hint.remove(), 500);
+                hasInteracted = true;
+            }
+        });
+        
+        // Touch support for mobile
+        this.canvas.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            const touch = e.touches[0];
+            if (touch) {
+                const rect = this.canvas.getBoundingClientRect();
+                this.mouse.x = touch.clientX - rect.left;
+                this.mouse.y = touch.clientY - rect.top;
+                if (!hasInteracted && hint) {
+                    hint.style.opacity = '0';
+                    setTimeout(() => hint.remove(), 500);
+                    hasInteracted = true;
+                }
+            }
+        });
     }
 
     resizeCanvas() {

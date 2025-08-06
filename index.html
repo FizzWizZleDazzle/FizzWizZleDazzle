@@ -22,9 +22,14 @@
         <!-- Hero Section - "The Loom" -->
         <header class="hero-section" id="hero">
             <canvas class="loom-canvas" id="loomCanvas"></canvas>
+            <div class="interaction-hint">Move your mouse to interact with the threads</div>
             <div class="hero-content">
                 <div class="profile-image">
-                    <img src="https://avatars.githubusercontent.com/u/126825095?v=4" alt="FizzWizZleDazzle" class="avatar">
+                    <img src="https://avatars.githubusercontent.com/u/126825095?v=4" 
+                         alt="FizzWizZleDazzle" 
+                         class="avatar"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="avatar avatar-fallback" style="display: none;">FWD</div>
                 </div>
                 <h1 class="name">FizzWizZleDazzle</h1>
                 <p class="tagline">Weaving ideas into digital reality</p>
@@ -75,7 +80,11 @@
                 <div class="about-content">
                     <div class="weaver-image">
                         <div class="professional-photo">
-                            <img src="https://avatars.githubusercontent.com/u/126825095?v=4" alt="FizzWizZleDazzle" class="avatar-large">
+                            <img src="https://avatars.githubusercontent.com/u/126825095?v=4" 
+                                 alt="FizzWizZleDazzle" 
+                                 class="avatar-large"
+                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="avatar-large avatar-fallback" style="display: none;">FWD</div>
                         </div>
                     </div>
                     <div class="about-text">
