@@ -2,12 +2,14 @@
 class DigitalWeaverPortfolio {
     constructor() {
         this.projects = [];
-        this.currentSection = 'major';
+        this.currentSection = 'about'; // Changed default to about
         this.canvas = null;
         this.ctx = null;
         this.threads = [];
         this.mouse = { x: 0, y: 0 };
         this.isLoading = true;
+        this.performanceMode = this.detectPerformanceMode();
+        this.aboutTextVisible = true;
         this.init();
     }
 
@@ -18,9 +20,32 @@ class DigitalWeaverPortfolio {
         this.setupNavigation();
         this.setupModal();
         this.setupScrollAnimations();
+        this.setupAvatarClick();
         this.renderProjects();
         this.hideLoading();
         this.startAnimationLoop();
+    }
+
+    detectPerformanceMode() {
+        // Check system specs and return performance mode
+        const memory = navigator.deviceMemory || 4; // GB
+        const cores = navigator.hardwareConcurrency || 4;
+        const connection = navigator.connection?.effectiveType || '4g';
+        
+        // Check for low-end devices
+        const isLowEnd = memory < 4 || cores < 4 || connection === 'slow-2g' || connection === '2g';
+        const isMedium = memory < 8 || cores < 8 || connection === '3g';
+        
+        if (isLowEnd) {
+            console.log('Performance mode: LOW - Reducing animations');
+            return 'low';
+        } else if (isMedium) {
+            console.log('Performance mode: MEDIUM - Moderate animations');
+            return 'medium';
+        } else {
+            console.log('Performance mode: HIGH - Full animations');
+            return 'high';
+        }
     }
 
     showLoading() {
@@ -98,7 +123,21 @@ class DigitalWeaverPortfolio {
 
     initializeThreads() {
         this.threads = [];
-        const threadCount = 12; // Reduced from 15
+        let threadCount;
+        
+        // Adjust thread count based on performance mode
+        switch (this.performanceMode) {
+            case 'low':
+                threadCount = 30;
+                break;
+            case 'medium':
+                threadCount = 60;
+                break;
+            case 'high':
+            default:
+                threadCount = 100;
+                break;
+        }
         
         for (let i = 0; i < threadCount; i++) {
             this.threads.push({
@@ -106,12 +145,12 @@ class DigitalWeaverPortfolio {
                 y: Math.random() * this.canvas.height,
                 targetX: Math.random() * this.canvas.width,
                 targetY: Math.random() * this.canvas.height,
-                vx: (Math.random() - 0.5) * 0.2, // Reduced from 0.5
-                vy: (Math.random() - 0.5) * 0.2, // Reduced from 0.5
-                opacity: Math.random() * 0.6 + 0.3, // Increased visibility
+                vx: (Math.random() - 0.5) * 0.2,
+                vy: (Math.random() - 0.5) * 0.2,
+                opacity: Math.random() * 0.6 + 0.3,
                 hue: Math.random() * 60 + 180, // Blue to cyan range
                 connections: [],
-                size: Math.random() * 2 + 1 // Variable thread size
+                size: Math.random() * 2 + 1
             });
         }
     }
@@ -129,15 +168,16 @@ class DigitalWeaverPortfolio {
         
         // Update thread positions
         this.threads.forEach(thread => {
-            // Enhanced mouse attraction
+            // Mouse repulsion instead of attraction
             const dx = this.mouse.x - thread.x;
             const dy = this.mouse.y - thread.y;
             const distance = Math.sqrt(dx * dx + dy * dy);
             
-            if (distance < 200) { // Increased attraction radius
+            if (distance < 200) { // Repulsion radius
                 const force = (200 - distance) / 200;
-                thread.vx += (dx / distance) * force * 0.01; // Reduced force
-                thread.vy += (dy / distance) * force * 0.01; // Reduced force
+                // Repel away from mouse (negative direction)
+                thread.vx -= (dx / distance) * force * 0.02;
+                thread.vy -= (dy / distance) * force * 0.02;
                 
                 // Make threads glow brighter when near mouse
                 thread.opacity = Math.min(1, thread.opacity + force * 0.3);
@@ -147,17 +187,20 @@ class DigitalWeaverPortfolio {
                 thread.opacity = Math.max(0.3, thread.opacity);
             }
             
-            // Update position with slower movement
-            thread.x += thread.vx * 0.5; // Slower movement
-            thread.y += thread.vy * 0.5; // Slower movement
+            // Update position with performance-aware movement
+            const moveSpeed = this.performanceMode === 'low' ? 0.3 : 0.5;
+            thread.x += thread.vx * moveSpeed;
+            thread.y += thread.vy * moveSpeed;
             
             // Drift towards target more slowly
-            thread.vx += (thread.targetX - thread.x) * 0.0005; // Slower drift
-            thread.vy += (thread.targetY - thread.y) * 0.0005; // Slower drift
+            const driftSpeed = this.performanceMode === 'low' ? 0.0003 : 0.0005;
+            thread.vx += (thread.targetX - thread.x) * driftSpeed;
+            thread.vy += (thread.targetY - thread.y) * driftSpeed;
             
-            // Apply more friction
-            thread.vx *= 0.95; // Increased friction
-            thread.vy *= 0.95; // Increased friction
+            // Apply friction
+            const friction = this.performanceMode === 'low' ? 0.92 : 0.95;
+            thread.vx *= friction;
+            thread.vy *= friction;
             
             // Boundary wrapping
             if (thread.x < 0) thread.x = this.canvas.width;
@@ -166,7 +209,8 @@ class DigitalWeaverPortfolio {
             if (thread.y > this.canvas.height) thread.y = 0;
             
             // Update target less frequently
-            if (Math.random() < 0.001) { // Reduced frequency
+            const targetUpdateRate = this.performanceMode === 'low' ? 0.0005 : 0.001;
+            if (Math.random() < targetUpdateRate) {
                 thread.targetX = Math.random() * this.canvas.width;
                 thread.targetY = Math.random() * this.canvas.height;
             }
@@ -220,7 +264,22 @@ class DigitalWeaverPortfolio {
 
     startAnimationLoop() {
         let lastTime = 0;
-        const targetFPS = 30; // Reduced from 60fps for better performance
+        let targetFPS;
+        
+        // Adjust FPS based on performance mode
+        switch (this.performanceMode) {
+            case 'low':
+                targetFPS = 15;
+                break;
+            case 'medium':
+                targetFPS = 24;
+                break;
+            case 'high':
+            default:
+                targetFPS = 30;
+                break;
+        }
+        
         const frameTime = 1000 / targetFPS;
         
         const animate = (currentTime) => {
@@ -329,6 +388,33 @@ class DigitalWeaverPortfolio {
         if (this.modal) {
             this.modal.classList.remove('active');
             document.body.style.overflow = '';
+        }
+    }
+
+    setupAvatarClick() {
+        const weaverAvatar = document.getElementById('weaverAvatar');
+        const aboutText = document.getElementById('aboutText');
+        
+        if (weaverAvatar && aboutText) {
+            weaverAvatar.addEventListener('click', () => {
+                if (this.aboutTextVisible) {
+                    // Slide out
+                    aboutText.classList.add('slide-out');
+                    setTimeout(() => {
+                        aboutText.style.visibility = 'hidden';
+                        aboutText.classList.remove('slide-out');
+                        aboutText.classList.add('slide-in');
+                        this.aboutTextVisible = false;
+                    }, 500);
+                } else {
+                    // Slide in
+                    aboutText.style.visibility = 'visible';
+                    aboutText.classList.remove('slide-in');
+                    setTimeout(() => {
+                        this.aboutTextVisible = true;
+                    }, 50);
+                }
+            });
         }
     }
 
