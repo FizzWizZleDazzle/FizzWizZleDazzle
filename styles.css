@@ -125,20 +125,20 @@ body {
     margin: 0 auto;
     padding: 0;
     min-height: 100vh;
+    position: relative;
+    z-index: 1;
 }
 
 /* Hero Section - "The Loom" */
 .hero-section {
     position: relative;
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    background: var(--bg-canvas);
-    background-image: 
-        radial-gradient(circle at 20% 20%, rgba(0, 217, 255, 0.03) 0%, transparent 50%),
-        radial-gradient(circle at 80% 80%, rgba(255, 107, 107, 0.03) 0%, transparent 50%);
+    background: transparent;
+    padding: 2rem 0;
 }
 
 .interaction-hint {
@@ -178,6 +178,46 @@ body {
     text-align: center;
     padding: 2rem;
     animation: heroFadeIn 2s ease-out;
+    pointer-events: none;
+}
+
+.hero-content > * {
+    pointer-events: none;
+}
+
+.hero-content .social-links,
+.hero-content .social-link,
+.hero-content a,
+.hero-content button {
+    pointer-events: auto;
+}
+
+.about-inline {
+    margin-top: 2rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+    font-size: 0.95rem;
+    line-height: 1.8;
+    color: var(--text-secondary);
+    animation: fadeInUp 1s ease-out 0.5s both;
+}
+
+.about-inline p {
+    margin-bottom: 0.8rem;
+}
+
+.about-inline .glowing-thread {
+    color: var(--accent-primary);
+    font-weight: 500;
+    position: relative;
+    text-shadow: 0 0 10px rgba(0, 217, 255, 0.3);
+}
+
+.about-inline em {
+    color: var(--accent-tertiary);
+    font-style: italic;
 }
 
 @keyframes heroFadeIn {
@@ -219,8 +259,8 @@ body {
 
 .avatar img,
 .avatar {
-    width: 100%;
-    height: 100%;
+    width: 75%;
+    height: 75%;
     border-radius: 50%;
     object-fit: cover;
 }
@@ -412,9 +452,15 @@ body {
     border-color: var(--accent-primary);
 }
 
+.nav-btn.active {
+    color: var(--text-primary);
+    font-weight: 700;
+}
+
 .nav-btn span {
     position: relative;
-    z-index: 1;
+    z-index: 2;
+    display: inline-block;
 }
 
 /* Main Content */
@@ -841,7 +887,109 @@ body {
 }
 
 .modal-body {
-    padding: 3rem;
+    padding: 2rem;
+}
+
+/* Modal Project Styling */
+.modal-project {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.modal-title {
+    font-size: 2rem;
+    color: var(--text-primary);
+    margin: 0;
+    background: var(--thread-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.modal-category {
+    padding: 0.3rem 0.8rem;
+    border-radius: 15px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.modal-category.major {
+    background: rgba(0, 217, 255, 0.2);
+    color: var(--accent-primary);
+    border: 1px solid var(--accent-primary);
+}
+
+.modal-category.minor {
+    background: rgba(255, 107, 107, 0.2);
+    color: var(--accent-secondary);
+    border: 1px solid var(--accent-secondary);
+}
+
+.modal-description {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+.modal-tech {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+    padding: 0.5rem 0;
+}
+
+.modal-tech .tech-tag {
+    padding: 0.4rem 0.9rem;
+    background: rgba(0, 217, 255, 0.1);
+    border: 1px solid var(--accent-primary);
+    border-radius: 20px;
+    color: var(--accent-primary);
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.modal-tech .tech-tag:hover {
+    background: rgba(0, 217, 255, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 217, 255, 0.3);
+}
+
+.modal-links {
+    display: flex;
+    gap: 1rem;
+    padding-top: 0.5rem;
+}
+
+.modal-links .project-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.2rem;
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-tertiary));
+    color: var(--bg-primary);
+    text-decoration: none;
+    border-radius: 25px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.modal-links .project-link:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(0, 217, 255, 0.4);
 }
 
 /* Utility Classes */
@@ -983,6 +1131,19 @@ body {
     
     .modal-body {
         padding: 2rem;
+    }
+    
+    .modal-title {
+        font-size: 1.5rem;
+    }
+    
+    .modal-tech {
+        gap: 0.75rem;
+    }
+    
+    .modal-links {
+        flex-direction: column;
+        gap: 1rem;
     }
 }
 
