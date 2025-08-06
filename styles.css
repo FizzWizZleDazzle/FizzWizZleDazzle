@@ -375,16 +375,17 @@ body {
 
 .nav-btn {
     background: rgba(255, 255, 255, 0.05);
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    color: var(--text-secondary);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    color: var(--text-primary);
     padding: 1rem 2rem;
     border-radius: 30px;
     cursor: pointer;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     font-size: 1rem;
-    font-weight: 500;
+    font-weight: 600;
     position: relative;
     overflow: hidden;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
 }
 
 .nav-btn::before {
@@ -708,6 +709,28 @@ body {
 
 .about-text {
     font-size: 1.2rem;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease;
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.about-text.slide-out {
+    transform: translateX(-100%);
+    opacity: 0;
+}
+
+.about-text.slide-in {
+    transform: translateX(100%);
+    opacity: 0;
+}
+
+.professional-photo {
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.professional-photo:hover {
+    transform: scale(1.05);
 }
 
 .about-text p {
