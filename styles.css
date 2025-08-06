@@ -189,13 +189,19 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 2.5rem;
-    font-weight: bold;
-    color: white;
     margin: 0 auto;
     box-shadow: 0 0 30px var(--shadow-glow);
     position: relative;
     overflow: hidden;
+    border: 3px solid var(--accent-primary);
+}
+
+.avatar img,
+.avatar {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
 }
 
 .avatar::before {
@@ -476,7 +482,7 @@ body {
 }
 
 .project-card:hover {
-    transform: translateY(-8px) rotateX(5deg) rotateY(5deg);
+    transform: translateY(-8px);
     box-shadow: 
         0 20px 40px rgba(0, 217, 255, 0.2),
         0 0 0 1px rgba(0, 217, 255, 0.3);
@@ -642,14 +648,20 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 4rem;
-    font-weight: bold;
-    color: white;
     margin: 0 auto;
     box-shadow: 0 0 50px var(--shadow-glow);
     position: relative;
     overflow: hidden;
     animation: avatarFloat 4s ease-in-out infinite;
+    border: 4px solid var(--accent-primary);
+}
+
+.avatar-large img,
+.avatar-large {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
 }
 
 .avatar-large::before {
@@ -902,7 +914,6 @@ body {
     .avatar-large {
         width: 150px;
         height: 150px;
-        font-size: 3rem;
     }
     
     .modal-content {
@@ -931,13 +942,11 @@ body {
     .avatar {
         width: 100px;
         height: 100px;
-        font-size: 2rem;
     }
     
     .avatar-large {
         width: 120px;
         height: 120px;
-        font-size: 2.5rem;
     }
     
     .project-card {
