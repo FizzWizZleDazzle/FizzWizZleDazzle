@@ -36,7 +36,7 @@ class DigitalWeaverPortfolio {
             setTimeout(() => {
                 loading.classList.add('hidden');
                 this.isLoading = false;
-            }, 2000);
+            }, 800); // Reduced from 2000ms to 800ms
         }
     }
 
@@ -71,7 +71,7 @@ class DigitalWeaverPortfolio {
 
     initializeThreads() {
         this.threads = [];
-        const threadCount = 15;
+        const threadCount = 12; // Reduced from 15
         
         for (let i = 0; i < threadCount; i++) {
             this.threads.push({
@@ -79,11 +79,12 @@ class DigitalWeaverPortfolio {
                 y: Math.random() * this.canvas.height,
                 targetX: Math.random() * this.canvas.width,
                 targetY: Math.random() * this.canvas.height,
-                vx: (Math.random() - 0.5) * 0.5,
-                vy: (Math.random() - 0.5) * 0.5,
-                opacity: Math.random() * 0.5 + 0.2,
+                vx: (Math.random() - 0.5) * 0.2, // Reduced from 0.5
+                vy: (Math.random() - 0.5) * 0.2, // Reduced from 0.5
+                opacity: Math.random() * 0.6 + 0.3, // Increased visibility
                 hue: Math.random() * 60 + 180, // Blue to cyan range
-                connections: []
+                connections: [],
+                size: Math.random() * 2 + 1 // Variable thread size
             });
         }
     }
@@ -101,28 +102,35 @@ class DigitalWeaverPortfolio {
         
         // Update thread positions
         this.threads.forEach(thread => {
-            // Mouse attraction
+            // Enhanced mouse attraction
             const dx = this.mouse.x - thread.x;
             const dy = this.mouse.y - thread.y;
             const distance = Math.sqrt(dx * dx + dy * dy);
             
-            if (distance < 150) {
-                const force = (150 - distance) / 150;
-                thread.vx += (dx / distance) * force * 0.02;
-                thread.vy += (dy / distance) * force * 0.02;
+            if (distance < 200) { // Increased attraction radius
+                const force = (200 - distance) / 200;
+                thread.vx += (dx / distance) * force * 0.01; // Reduced force
+                thread.vy += (dy / distance) * force * 0.01; // Reduced force
+                
+                // Make threads glow brighter when near mouse
+                thread.opacity = Math.min(1, thread.opacity + force * 0.3);
+            } else {
+                // Fade back to normal opacity
+                thread.opacity *= 0.99;
+                thread.opacity = Math.max(0.3, thread.opacity);
             }
             
-            // Update position
-            thread.x += thread.vx;
-            thread.y += thread.vy;
+            // Update position with slower movement
+            thread.x += thread.vx * 0.5; // Slower movement
+            thread.y += thread.vy * 0.5; // Slower movement
             
-            // Drift towards target
-            thread.vx += (thread.targetX - thread.x) * 0.001;
-            thread.vy += (thread.targetY - thread.y) * 0.001;
+            // Drift towards target more slowly
+            thread.vx += (thread.targetX - thread.x) * 0.0005; // Slower drift
+            thread.vy += (thread.targetY - thread.y) * 0.0005; // Slower drift
             
-            // Apply friction
-            thread.vx *= 0.99;
-            thread.vy *= 0.99;
+            // Apply more friction
+            thread.vx *= 0.95; // Increased friction
+            thread.vy *= 0.95; // Increased friction
             
             // Boundary wrapping
             if (thread.x < 0) thread.x = this.canvas.width;
@@ -130,54 +138,72 @@ class DigitalWeaverPortfolio {
             if (thread.y < 0) thread.y = this.canvas.height;
             if (thread.y > this.canvas.height) thread.y = 0;
             
-            // Update target occasionally
-            if (Math.random() < 0.002) {
+            // Update target less frequently
+            if (Math.random() < 0.001) { // Reduced frequency
                 thread.targetX = Math.random() * this.canvas.width;
                 thread.targetY = Math.random() * this.canvas.height;
             }
         });
         
-        // Draw connections
+        // Draw connections with enhanced visibility near mouse
         this.threads.forEach((thread, i) => {
             this.threads.slice(i + 1).forEach(otherThread => {
                 const dx = thread.x - otherThread.x;
                 const dy = thread.y - otherThread.y;
                 const distance = Math.sqrt(dx * dx + dy * dy);
                 
-                if (distance < 100) {
-                    const opacity = (1 - distance / 100) * Math.min(thread.opacity, otherThread.opacity);
+                if (distance < 120) { // Increased connection distance
+                    const opacity = (1 - distance / 120) * Math.min(thread.opacity, otherThread.opacity);
+                    
+                    // Enhanced visibility near mouse
+                    const mouseDistance = Math.min(
+                        Math.sqrt((this.mouse.x - thread.x) ** 2 + (this.mouse.y - thread.y) ** 2),
+                        Math.sqrt((this.mouse.x - otherThread.x) ** 2 + (this.mouse.y - otherThread.y) ** 2)
+                    );
+                    const mouseEffect = mouseDistance < 150 ? 1.5 : 1;
                     
                     this.ctx.beginPath();
                     this.ctx.moveTo(thread.x, thread.y);
                     this.ctx.lineTo(otherThread.x, otherThread.y);
-                    this.ctx.strokeStyle = `hsla(${thread.hue}, 70%, 60%, ${opacity})`;
-                    this.ctx.lineWidth = 1;
+                    this.ctx.strokeStyle = `hsla(${thread.hue}, 70%, 60%, ${opacity * mouseEffect})`;
+                    this.ctx.lineWidth = mouseEffect > 1 ? 2 : 1;
                     this.ctx.stroke();
                 }
             });
         });
         
-        // Draw threads
+        // Draw threads with variable sizes
         this.threads.forEach(thread => {
             this.ctx.beginPath();
-            this.ctx.arc(thread.x, thread.y, 2, 0, Math.PI * 2);
+            this.ctx.arc(thread.x, thread.y, thread.size, 0, Math.PI * 2);
             this.ctx.fillStyle = `hsla(${thread.hue}, 70%, 60%, ${thread.opacity})`;
             this.ctx.fill();
             
-            // Glow effect
-            this.ctx.beginPath();
-            this.ctx.arc(thread.x, thread.y, 4, 0, Math.PI * 2);
-            this.ctx.fillStyle = `hsla(${thread.hue}, 70%, 60%, ${thread.opacity * 0.3})`;
-            this.ctx.fill();
+            // Enhanced glow effect near mouse
+            const mouseDistance = Math.sqrt((this.mouse.x - thread.x) ** 2 + (this.mouse.y - thread.y) ** 2);
+            if (mouseDistance < 150) {
+                const glowIntensity = (150 - mouseDistance) / 150;
+                this.ctx.beginPath();
+                this.ctx.arc(thread.x, thread.y, thread.size * 3, 0, Math.PI * 2);
+                this.ctx.fillStyle = `hsla(${thread.hue}, 70%, 60%, ${thread.opacity * 0.2 * glowIntensity})`;
+                this.ctx.fill();
+            }
         });
     }
 
     startAnimationLoop() {
-        const animate = () => {
-            this.animateThreads();
+        let lastTime = 0;
+        const targetFPS = 30; // Reduced from 60fps for better performance
+        const frameTime = 1000 / targetFPS;
+        
+        const animate = (currentTime) => {
+            if (currentTime - lastTime >= frameTime) {
+                this.animateThreads();
+                lastTime = currentTime;
+            }
             requestAnimationFrame(animate);
         };
-        animate();
+        animate(0);
     }
 
     setupNavigation() {
