@@ -47,4 +47,6 @@
 
 <p align="center">
   <em>“The simpler it looks, the deeper the craft.”</em>
+  <br></br>
+  <em>“JavaScript is a mistake. TypeScript is the apology. Accept it, but only on the web.”</em>
 </p>
