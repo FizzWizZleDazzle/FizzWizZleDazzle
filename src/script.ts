@@ -1,19 +1,61 @@
+// Type definitions for the project data structure
+interface Project {
+  title: string;
+  description: string;
+  technologies: string[];
+  category: 'major' | 'minor';
+  github: string | null;
+  website: string | null;
+}
+
+interface Thread {
+  x: number;
+  y: number;
+  targetX: number;
+  targetY: number;
+  vx: number;
+  vy: number;
+  opacity: number;
+  hue: number;
+  connections: unknown[];
+  size: number;
+}
+
+interface Mouse {
+  x: number;
+  y: number;
+}
+
+// Extend Navigator interface for modern browser APIs
+interface NavigatorExtended extends Navigator {
+  deviceMemory?: number;
+  connection?: {
+    effectiveType: string;
+  };
+}
+
+type PerformanceMode = 'low' | 'medium' | 'high';
+
 // Digital Weaver Portfolio - Advanced Interactive Experience
 class DigitalWeaverPortfolio {
+    private projects: Project[] = [];
+    private currentSection: string = 'major'; // Default to major projects
+    private canvas: HTMLCanvasElement | null = null;
+    private ctx: CanvasRenderingContext2D | null = null;
+    private threads: Thread[] = [];
+    private mouse: Mouse = { x: 0, y: 0 };
+    private isLoading: boolean = true;
+    private performanceMode: PerformanceMode;
+    private modal: HTMLElement | null = null;
+    private modalBody: HTMLElement | null = null;
+    private modalClose: HTMLElement | null = null;
+
     constructor() {
-        this.projects = [];
-        this.currentSection = 'major'; // Default to major projects
-        this.canvas = null;
-        this.ctx = null;
-        this.threads = [];
-        this.mouse = { x: 0, y: 0 };
-        this.isLoading = true;
         this.performanceMode = this.detectPerformanceMode();
-        this.aboutTextVisible = true;
         this.init();
     }
 
-    async init() {
+    async init(): Promise<void> {
         this.showLoading();
         await this.loadProjects();
         this.setupCanvas();
@@ -26,11 +68,12 @@ class DigitalWeaverPortfolio {
         this.startAnimationLoop();
     }
 
-    detectPerformanceMode() {
+    detectPerformanceMode(): PerformanceMode {
         // Check system specs and return performance mode
-        const memory = navigator.deviceMemory || 4; // GB
+        const nav = navigator as NavigatorExtended;
+        const memory = nav.deviceMemory || 4; // GB
         const cores = navigator.hardwareConcurrency || 4;
-        const connection = navigator.connection?.effectiveType || '4g';
+        const connection = nav.connection?.effectiveType || '4g';
         
         // Check for low-end devices
         const isLowEnd = memory < 4 || cores < 4 || connection === 'slow-2g' || connection === '2g';
@@ -48,14 +91,14 @@ class DigitalWeaverPortfolio {
         }
     }
 
-    showLoading() {
+    showLoading(): void {
         const loading = document.getElementById('loading');
         if (loading) {
             loading.classList.remove('hidden');
         }
     }
 
-    hideLoading() {
+    hideLoading(): void {
         const loading = document.getElementById('loading');
         if (loading) {
             setTimeout(() => {
@@ -65,18 +108,18 @@ class DigitalWeaverPortfolio {
         }
     }
 
-    async loadProjects() {
+    async loadProjects(): Promise<void> {
         try {
             const response = await fetch('projects.json');
-            this.projects = await response.json();
+            this.projects = await response.json() as Project[];
         } catch (error) {
             console.error('Error loading projects:', error);
             this.projects = [];
         }
     }
 
-    setupCanvas() {
-        this.canvas = document.getElementById('loomCanvas');
+    setupCanvas(): void {
+        this.canvas = document.getElementById('loomCanvas') as HTMLCanvasElement;
         if (!this.canvas) return;
         
         this.ctx = this.canvas.getContext('2d');
@@ -85,10 +128,10 @@ class DigitalWeaverPortfolio {
         
         // Hide interaction hint after first interaction
         let hasInteracted = false;
-        const hint = document.querySelector('.interaction-hint');
+        const hint = document.querySelector('.interaction-hint') as HTMLElement;
         
         window.addEventListener('resize', () => this.resizeCanvas());
-        this.canvas.addEventListener('mousemove', (e) => {
+        this.canvas.addEventListener('mousemove', (e: MouseEvent) => {
             this.updateMouse(e);
             if (!hasInteracted && hint) {
                 hint.style.opacity = '0';
@@ -98,11 +141,11 @@ class DigitalWeaverPortfolio {
         });
         
         // Touch support for mobile
-        this.canvas.addEventListener('touchmove', (e) => {
+        this.canvas.addEventListener('touchmove', (e: TouchEvent) => {
             e.preventDefault();
             const touch = e.touches[0];
             if (touch) {
-                const rect = this.canvas.getBoundingClientRect();
+                const rect = this.canvas!.getBoundingClientRect();
                 this.mouse.x = touch.clientX - rect.left;
                 this.mouse.y = touch.clientY - rect.top;
                 if (!hasInteracted && hint) {
@@ -114,16 +157,16 @@ class DigitalWeaverPortfolio {
         });
     }
 
-    resizeCanvas() {
+    resizeCanvas(): void {
         if (!this.canvas) return;
         
         this.canvas.width = this.canvas.offsetWidth;
         this.canvas.height = this.canvas.offsetHeight;
     }
 
-    initializeThreads() {
+    initializeThreads(): void {
         this.threads = [];
-        let threadCount;
+        let threadCount: number;
         
         // Adjust thread count based on performance mode
         switch (this.performanceMode) {
@@ -141,10 +184,10 @@ class DigitalWeaverPortfolio {
         
         for (let i = 0; i < threadCount; i++) {
             this.threads.push({
-                x: Math.random() * this.canvas.width,
-                y: Math.random() * this.canvas.height,
-                targetX: Math.random() * this.canvas.width,
-                targetY: Math.random() * this.canvas.height,
+                x: Math.random() * this.canvas!.width,
+                y: Math.random() * this.canvas!.height,
+                targetX: Math.random() * this.canvas!.width,
+                targetY: Math.random() * this.canvas!.height,
                 vx: (Math.random() - 0.5) * 0.2,
                 vy: (Math.random() - 0.5) * 0.2,
                 opacity: Math.random() * 0.6 + 0.3,
@@ -155,16 +198,16 @@ class DigitalWeaverPortfolio {
         }
     }
 
-    updateMouse(e) {
-        const rect = this.canvas.getBoundingClientRect();
+    updateMouse(e: MouseEvent): void {
+        const rect = this.canvas!.getBoundingClientRect();
         this.mouse.x = e.clientX - rect.left;
         this.mouse.y = e.clientY - rect.top;
     }
 
-    animateThreads() {
+    animateThreads(): void {
         if (!this.ctx || this.isLoading) return;
         
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.ctx.clearRect(0, 0, this.canvas!.width, this.canvas!.height);
         
         // Update thread positions
         this.threads.forEach(thread => {
@@ -176,8 +219,8 @@ class DigitalWeaverPortfolio {
             if (distance < 200 && distance > 0) { // Repulsion radius
                 const force = (200 - distance) / 200;
                 // Strong repulsion away from mouse
-                thread.vx -= (dx / distance) * force //* 0.15;
-                thread.vy -= (dy / distance) * force //* 0.15;
+                thread.vx -= (dx / distance) * force;
+                thread.vy -= (dy / distance) * force;
                 
                 // Make threads glow and pulse when repelled
                 thread.opacity = Math.min(1, thread.opacity + force * 0.5);
@@ -214,16 +257,16 @@ class DigitalWeaverPortfolio {
             }
             
             // Boundary wrapping
-            if (thread.x < 0) thread.x = this.canvas.width;
-            if (thread.x > this.canvas.width) thread.x = 0;
-            if (thread.y < 0) thread.y = this.canvas.height;
-            if (thread.y > this.canvas.height) thread.y = 0;
+            if (thread.x < 0) thread.x = this.canvas!.width;
+            if (thread.x > this.canvas!.width) thread.x = 0;
+            if (thread.y < 0) thread.y = this.canvas!.height;
+            if (thread.y > this.canvas!.height) thread.y = 0;
             
             // Update target less frequently
             const targetUpdateRate = this.performanceMode === 'low' ? 0.0005 : 0.001;
             if (Math.random() < targetUpdateRate) {
-                thread.targetX = Math.random() * this.canvas.width;
-                thread.targetY = Math.random() * this.canvas.height;
+                thread.targetX = Math.random() * this.canvas!.width;
+                thread.targetY = Math.random() * this.canvas!.height;
             }
         });
         
@@ -244,38 +287,38 @@ class DigitalWeaverPortfolio {
                     );
                     const mouseEffect = mouseDistance < 150 ? 1.5 : 1;
                     
-                    this.ctx.beginPath();
-                    this.ctx.moveTo(thread.x, thread.y);
-                    this.ctx.lineTo(otherThread.x, otherThread.y);
-                    this.ctx.strokeStyle = `hsla(${thread.hue}, 70%, 60%, ${opacity * mouseEffect})`;
-                    this.ctx.lineWidth = mouseEffect > 1 ? 2 : 1;
-                    this.ctx.stroke();
+                    this.ctx!.beginPath();
+                    this.ctx!.moveTo(thread.x, thread.y);
+                    this.ctx!.lineTo(otherThread.x, otherThread.y);
+                    this.ctx!.strokeStyle = `hsla(${thread.hue}, 70%, 60%, ${opacity * mouseEffect})`;
+                    this.ctx!.lineWidth = mouseEffect > 1 ? 2 : 1;
+                    this.ctx!.stroke();
                 }
             });
         });
         
         // Draw threads with variable sizes
         this.threads.forEach(thread => {
-            this.ctx.beginPath();
-            this.ctx.arc(thread.x, thread.y, thread.size, 0, Math.PI * 2);
-            this.ctx.fillStyle = `hsla(${thread.hue}, 70%, 60%, ${thread.opacity})`;
-            this.ctx.fill();
+            this.ctx!.beginPath();
+            this.ctx!.arc(thread.x, thread.y, thread.size, 0, Math.PI * 2);
+            this.ctx!.fillStyle = `hsla(${thread.hue}, 70%, 60%, ${thread.opacity})`;
+            this.ctx!.fill();
             
             // Enhanced glow effect near mouse
             const mouseDistance = Math.sqrt((this.mouse.x - thread.x) ** 2 + (this.mouse.y - thread.y) ** 2);
             if (mouseDistance < 150) {
                 const glowIntensity = (150 - mouseDistance) / 150;
-                this.ctx.beginPath();
-                this.ctx.arc(thread.x, thread.y, thread.size * 3, 0, Math.PI * 2);
-                this.ctx.fillStyle = `hsla(${thread.hue}, 70%, 60%, ${thread.opacity * 0.2 * glowIntensity})`;
-                this.ctx.fill();
+                this.ctx!.beginPath();
+                this.ctx!.arc(thread.x, thread.y, thread.size * 3, 0, Math.PI * 2);
+                this.ctx!.fillStyle = `hsla(${thread.hue}, 70%, 60%, ${thread.opacity * 0.2 * glowIntensity})`;
+                this.ctx!.fill();
             }
         });
     }
 
-    startAnimationLoop() {
+    startAnimationLoop(): void {
         let lastTime = 0;
-        let targetFPS;
+        let targetFPS: number;
         
         // Adjust FPS based on performance mode
         switch (this.performanceMode) {
@@ -293,7 +336,7 @@ class DigitalWeaverPortfolio {
         
         const frameTime = 1000 / targetFPS;
         
-        const animate = (currentTime) => {
+        const animate = (currentTime: number): void => {
             if (currentTime - lastTime >= frameTime) {
                 this.animateThreads();
                 lastTime = currentTime;
@@ -303,14 +346,14 @@ class DigitalWeaverPortfolio {
         animate(0);
     }
 
-    setupNavigation() {
+    setupNavigation(): void {
         const navButtons = document.querySelectorAll('.nav-btn');
         const sections = document.querySelectorAll('.projects-section');
 
         navButtons.forEach(btn => {
-            btn.addEventListener('click', (e) => {
+            btn.addEventListener('click', (e: Event) => {
                 e.preventDefault();
-                const targetSection = btn.dataset.section;
+                const targetSection = (btn as HTMLElement).dataset.section;
                 
                 // Update active button
                 navButtons.forEach(b => b.classList.remove('active'));
@@ -320,8 +363,8 @@ class DigitalWeaverPortfolio {
                 sections.forEach(section => {
                     if (section.id === targetSection) {
                         section.classList.remove('hidden');
-                        section.style.animation = 'fadeInUp 0.6s ease-out forwards';
-                        this.currentSection = targetSection;
+                        (section as HTMLElement).style.animation = 'fadeInUp 0.6s ease-out forwards';
+                        this.currentSection = targetSection!;
                         
                         // Re-render projects when switching to project section
                         setTimeout(() => this.renderProjects(), 100);
@@ -333,7 +376,7 @@ class DigitalWeaverPortfolio {
         });
     }
 
-    setupModal() {
+    setupModal(): void {
         this.modal = document.getElementById('projectModal');
         this.modalBody = document.getElementById('modalBody');
         this.modalClose = document.getElementById('modalClose');
@@ -343,21 +386,21 @@ class DigitalWeaverPortfolio {
         }
         
         if (this.modal) {
-            this.modal.addEventListener('click', (e) => {
+            this.modal.addEventListener('click', (e: Event) => {
                 if (e.target === this.modal) {
                     this.closeModal();
                 }
             });
         }
         
-        document.addEventListener('keydown', (e) => {
+        document.addEventListener('keydown', (e: KeyboardEvent) => {
             if (e.key === 'Escape') {
                 this.closeModal();
             }
         });
     }
 
-    openModal(project) {
+    openModal(project: Project): void {
         if (!this.modal || !this.modalBody) return;
         
         this.modalBody.innerHTML = `
@@ -393,44 +436,20 @@ class DigitalWeaverPortfolio {
         document.body.style.overflow = 'hidden';
     }
 
-    closeModal() {
+    closeModal(): void {
         if (this.modal) {
             this.modal.classList.remove('active');
             document.body.style.overflow = '';
         }
     }
 
-    setupAvatarClick() {
+    setupAvatarClick(): void {
         // Avatar click functionality removed since about section is integrated
-        return;  
-        const weaverAvatar = document.getElementById('weaverAvatar');
-        const aboutText = document.getElementById('aboutText');
-        
-        if (false && weaverAvatar && aboutText) {
-            weaverAvatar.addEventListener('click', () => {
-                if (this.aboutTextVisible) {
-                    // Slide out
-                    aboutText.classList.add('slide-out');
-                    setTimeout(() => {
-                        aboutText.style.visibility = 'hidden';
-                        aboutText.classList.remove('slide-out');
-                        aboutText.classList.add('slide-in');
-                        this.aboutTextVisible = false;
-                    }, 500);
-                } else {
-                    // Slide in
-                    aboutText.style.visibility = 'visible';
-                    aboutText.classList.remove('slide-in');
-                    setTimeout(() => {
-                        this.aboutTextVisible = true;
-                    }, 50);
-                }
-            });
-        }
+        return;
     }
 
-    setupScrollAnimations() {
-        const observerOptions = {
+    setupScrollAnimations(): void {
+        const observerOptions: IntersectionObserverInit = {
             threshold: 0.1,
             rootMargin: '0px 0px -50px 0px'
         };
@@ -454,7 +473,7 @@ class DigitalWeaverPortfolio {
         });
     }
 
-    renderProjects() {
+    renderProjects(): void {
         const majorGrid = document.getElementById('major-projects');
         const minorGrid = document.getElementById('minor-projects');
         
@@ -475,7 +494,7 @@ class DigitalWeaverPortfolio {
         this.setupProjectCardAnimations();
     }
 
-    renderProjectMasonry(projects, container) {
+    renderProjectMasonry(projects: Project[], container: HTMLElement): void {
         projects.forEach((project, index) => {
             const projectCard = this.createProjectCard(project);
             projectCard.classList.add('scroll-reveal', `delay-${Math.min(index, 4)}`);
@@ -483,7 +502,7 @@ class DigitalWeaverPortfolio {
         });
     }
 
-    createProjectCard(project) {
+    createProjectCard(project: Project): HTMLElement {
         const card = document.createElement('div');
         card.className = 'project-card';
         card.setAttribute('data-category', project.category);
@@ -536,14 +555,14 @@ class DigitalWeaverPortfolio {
         return card;
     }
 
-    createProjectLink(url, iconClass, text) {
+    createProjectLink(url: string, iconClass: string, text: string): HTMLElement {
         const link = document.createElement('a');
         link.href = url;
         link.target = '_blank';
         link.className = 'project-link';
         
         // Prevent modal from opening when clicking links
-        link.addEventListener('click', (e) => {
+        link.addEventListener('click', (e: Event) => {
             e.stopPropagation();
         });
         
@@ -559,8 +578,8 @@ class DigitalWeaverPortfolio {
         return link;
     }
 
-    setupProjectCardAnimations() {
-        const observerOptions = {
+    setupProjectCardAnimations(): void {
+        const observerOptions: IntersectionObserverInit = {
             threshold: 0.1,
             rootMargin: '0px 0px -50px 0px'
         };
