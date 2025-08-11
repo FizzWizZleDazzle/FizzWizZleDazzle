@@ -24,6 +24,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Build TypeScript and bundle
+        run: npm run build
+        
       - name: Install ImageMagick
         run: sudo apt-get update && sudo apt-get install -y imagemagick
         
@@ -44,6 +56,10 @@ jobs:
           # Create a PNG favicon for modern browsers
           convert avatar.png -resize 192x192 favicon.png
           
+          # Copy favicons to the dist directory
+          cp favicon.ico dist/
+          cp favicon.png dist/
+          
           # Clean up temporary files
           rm favicon-16.png favicon-32.png favicon-48.png favicon-64.png avatar.png
         
@@ -53,7 +69,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: '.'
+          path: './dist'
           
       - name: Deploy to GitHub Pages
         id: deployment
