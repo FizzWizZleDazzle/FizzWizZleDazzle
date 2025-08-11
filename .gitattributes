@@ -1,4 +1,4 @@
 *.html linguist-documentation
 *.css linguist-documentation
-*.js linguist-documentation
+*.ts linguist-documentation
 *.json linguist-documentation
