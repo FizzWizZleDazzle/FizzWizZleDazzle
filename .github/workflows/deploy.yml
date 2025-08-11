@@ -4,6 +4,8 @@ on:
   push:
     branches: [ main ]
   workflow_dispatch:
+  schedule:
+    - cron: '0 2 * * *'
 
 permissions:
   contents: read
@@ -39,23 +41,35 @@ jobs:
       - name: Install ImageMagick
         run: sudo apt-get update && sudo apt-get install -y imagemagick
         
-      - name: Download and convert avatar to favicon
+      - name: Download and convert avatar to favicon with rounded corners
         run: |
           # Download GitHub avatar
           curl -L https://avatars.githubusercontent.com/u/126825095?v=4 -o avatar.png
-          
-          # Convert to multiple sizes for better browser support
-          convert avatar.png -resize 16x16 favicon-16.png
-          convert avatar.png -resize 32x32 favicon-32.png
-          convert avatar.png -resize 48x48 favicon-48.png
-          convert avatar.png -resize 64x64 favicon-64.png
-          
+
+          # Function to round corners of a PNG
+          roundcorners() {
+            local size=$1
+            local radius=$(($size / 4))
+            convert avatar.png -resize ${size}x${size} \
+              \( +clone -alpha extract \
+                -draw "roundrectangle 0,0,$((size-1)),$((size-1)),$radius,$radius" \
+                -blur 0x1 \
+              \) \
+              -alpha off -compose CopyOpacity -composite favicon-${size}.png
+          }
+
+          # Create favicons with rounded corners in multiple sizes
+          for size in 16 32 48 64; do
+            roundcorners $size
+          done
+
           # Create ICO file with multiple resolutions
           convert favicon-16.png favicon-32.png favicon-48.png favicon-64.png favicon.ico
-          
-          # Create a PNG favicon for modern browsers
-          convert avatar.png -resize 192x192 favicon.png
-          
+
+          # Create a PNG favicon for modern browsers (rounded, 192x192)
+          roundcorners 192
+          mv favicon-192.png favicon.png
+
           # Copy favicons to the dist directory
           cp favicon.ico dist/
           cp favicon.png dist/
