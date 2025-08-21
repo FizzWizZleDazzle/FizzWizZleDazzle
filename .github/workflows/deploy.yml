@@ -50,15 +50,20 @@ jobs:
           roundcorners() {
             local size=$1
             local radius=$(($size / 4))
-            # Resize to fill the box and crop excess from the edges (preserve center),
-            # then apply a rounded-rectangle alpha mask using DstIn compose so the
-            # mask is applied correctly.
-            convert avatar.png -resize ${size}x${size}^ -gravity center -extent ${size}x${size} \
-              \( +clone -alpha extract \
-                -draw "roundrectangle 0,0,$((size-1)),$((size-1)),$radius,$radius" \
-                -blur 0x1 \
-              \) \
-              -alpha set -compose DstIn -composite favicon-${size}.png
+
+            # Resize to fill the box and crop excess from the edges (preserve center)
+            convert avatar.png -resize ${size}x${size}^ -gravity center -extent ${size}x${size} avatar_resized.png
+
+            # Create a mask with a white rounded rectangle on black background
+            convert -size ${size}x${size} xc:black -fill white \
+              -draw "roundrectangle 0,0,$((size-1)),$((size-1)),$radius,$radius" \
+              -blur 0x1 mask.png
+
+            # Apply the mask to the resized avatar by copying the mask into the alpha channel
+            convert avatar_resized.png mask.png -alpha set -compose CopyOpacity -composite favicon-${size}.png
+
+            # Cleanup temporaries
+            rm -f avatar_resized.png mask.png
           }
 
           # Create favicons with rounded corners in multiple sizes
