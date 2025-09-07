@@ -31,9 +31,12 @@
 <div align="center">
   <img src="https://github-readme-activity-graph.vercel.app/graph?username=FizzWizZleDazzle&theme=tokyo-night&area=true" />
   <br/>
+  <img src="https://github-readme-streak-stats.herokuapp.com/?user=FizzWizzleDazzle&theme=tokyonight&hide_border=false" alt="Stats" />
+  <br/>
   <img src="https://github-readme-stats.vercel.app/api?username=FizzWizZleDazzle&show_icons=true&theme=tokyonight" alt="Stats" />
   <br/>
   <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=FizzWizZleDazzle&layout=compact&theme=tokyonight" alt="Top Langs" />
+  <br/>
 </div>
 
 ---
