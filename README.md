@@ -5,7 +5,7 @@
 ### 🧩 About Me
 
 - 🔭 Currently building **game engine tools** and **desktop-first apps**
-- 🧠 Interested in **Rust**, **Flutter**, and **modern graphics systems**
+- 🧠 Interested in **Rust**, **GTK**, and **modern graphics systems**
 - 🎮 Love clean UI/UX, powerful low-level tooling, and solving hard problems
 - ⚡ Fun fact: I hate bloatware and *love* minimal, efficient systems
 
