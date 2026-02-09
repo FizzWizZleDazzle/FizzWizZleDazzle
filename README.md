@@ -2,16 +2,16 @@
 
 ---
 
-### 🧩 About Me
+### About Me
 
-- 🔭 Currently building **game engine tools** and **desktop-first apps**
-- 🧠 Interested in **Rust**, **GTK**, and **modern graphics systems**
-- 🎮 Love clean UI/UX, powerful low-level tooling, and solving hard problems
-- ⚡ Fun fact: I hate bloatware and *love* minimal, efficient systems
+- Currently building **game engine tools** and **desktop-first apps**
+- Interested in **Rust**, **GTK**, and **modern graphics systems**
+- Love clean UI/UX, powerful low-level tooling, and solving hard problems
+- Fun fact: I hate bloatware and *love* minimal, efficient systems
 
 ---
 
-### 🧰 Tech Stack
+### Tech Stack
 
 <p align="center">
   <img src="https://img.shields.io/badge/Rust-black?style=for-the-badge&logo=rust" />
@@ -26,25 +26,25 @@
 
 ---
 
-### 📈 GitHub Stats
+### GitHub Stats
 
 <div align="center">
   <img src="https://github-readme-activity-graph.vercel.app/graph?username=FizzWizZleDazzle&theme=tokyo-night&area=true" />
   <br/>
   <img src="https://github-readme-streak-stats.herokuapp.com/?user=FizzWizzleDazzle&theme=tokyonight&hide_border=false" alt="Stats" />
   <br/>
-  <img src="https://github-readme-stats.vercel.app/api?username=FizzWizZleDazzle&show_icons=true&theme=tokyonight" alt="Stats" />
+  <!-- <img src="https://github-readme-stats.vercel.app/api?username=FizzWizZleDazzle&show_icons=true&theme=tokyonight" alt="Stats" />
   <br/>
   <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=FizzWizZleDazzle&layout=compact&theme=tokyonight" alt="Top Langs" />
-  <br/>
+  <br/> -->
 </div>
 
 ---
 
-### 📫 How to Reach Me
+### How to Reach Me
 
-- 📨 DM me on GitHub, Discord (username: atrur) or open an issue in any of my repos
-- 🛠️ Feel free to fork or contribute to anything I build!
+- DM me on GitHub, Discord (username: atrur) or open an issue in any of my repos
+- Feel free to fork or contribute to anything I build!
 
 ---
 
