@@ -1,605 +1,473 @@
-// Type definitions for the project data structure
+// fizzwizzledazzle - pixel portfolio
+
+interface ProjectLinks {
+  site: string | null;
+  repo: string | null;
+}
+
 interface Project {
-  title: string;
+  name: string;
+  kind: string;
+  tagline: string;
   description: string;
-  technologies: string[];
-  category: 'major' | 'minor';
-  github: string | null;
-  website: string | null;
+  stack: string[];
+  links: ProjectLinks;
 }
 
-interface Thread {
-  x: number;
-  y: number;
-  targetX: number;
-  targetY: number;
-  vx: number;
-  vy: number;
-  opacity: number;
-  hue: number;
-  connections: unknown[];
-  size: number;
+interface PaletteItem {
+  label: string;
+  hint: string;
+  kind?: string;
+  keywords: string;
+  run: () => void;
 }
 
-interface Mouse {
-  x: number;
-  y: number;
+const ROLE = 'systems & tools developer';
+
+const TICKER = [
+  'rust', 'c', 'c++', 'typescript', 'webassembly', 'bevy', 'ecs', 'gpu',
+  'wgpu', 'cuda', 'rayon', 'sdl3', 'flecs', 'box2d', 'nnue', 'uci',
+  'pytorch', 'java', 'html', 'css', 'ufbx',
+];
+
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// ---- small dom helper ----
+
+function el<K extends keyof HTMLElementTagNameMap>(
+  tag: K,
+  className?: string,
+  text?: string
+): HTMLElementTagNameMap[K] {
+  const node = document.createElement(tag);
+  if (className) node.className = className;
+  if (text !== undefined) node.textContent = text;
+  return node;
 }
 
-// Extend Navigator interface for modern browser APIs
-interface NavigatorExtended extends Navigator {
-  deviceMemory?: number;
-  connection?: {
-    effectiveType: string;
+function anchor(href: string, className: string, text: string): HTMLAnchorElement {
+  const a = el('a', className, text);
+  a.href = href;
+  a.target = '_blank';
+  a.rel = 'noopener';
+  return a;
+}
+
+function openUrl(url: string): void {
+  window.open(url, '_blank', 'noopener');
+}
+
+// ---- toast ----
+
+let toastTimer = 0;
+function toast(message: string): void {
+  const node = document.getElementById('toast');
+  if (!node) return;
+  node.textContent = message;
+  node.classList.add('show');
+  node.setAttribute('aria-hidden', 'false');
+  window.clearTimeout(toastTimer);
+  toastTimer = window.setTimeout(() => {
+    node.classList.remove('show');
+    node.setAttribute('aria-hidden', 'true');
+  }, 2600);
+}
+
+// ---- hero bits ----
+
+function typewriter(target: HTMLElement, text: string, done?: () => void): void {
+  if (reduceMotion) {
+    target.textContent = text;
+    done?.();
+    return;
+  }
+  let i = 0;
+  const tick = (): void => {
+    target.textContent = text.slice(0, i);
+    if (i <= text.length) {
+      i += 1;
+      setTimeout(tick, 45);
+    } else {
+      done?.();
+    }
   };
+  tick();
 }
 
-type PerformanceMode = 'low' | 'medium' | 'high';
-
-// Digital Weaver Portfolio - Advanced Interactive Experience
-class DigitalWeaverPortfolio {
-    private projects: Project[] = [];
-    private currentSection: string = 'major'; // Default to major projects
-    private canvas: HTMLCanvasElement | null = null;
-    private ctx: CanvasRenderingContext2D | null = null;
-    private threads: Thread[] = [];
-    private mouse: Mouse = { x: 0, y: 0 };
-    private isLoading: boolean = true;
-    private performanceMode: PerformanceMode;
-    private modal: HTMLElement | null = null;
-    private modalBody: HTMLElement | null = null;
-    private modalClose: HTMLElement | null = null;
-
-    constructor() {
-        this.performanceMode = this.detectPerformanceMode();
-        this.init();
-    }
-
-    async init(): Promise<void> {
-        this.showLoading();
-        await this.loadProjects();
-        this.setupCanvas();
-        this.setupNavigation();
-        this.setupModal();
-        this.setupScrollAnimations();
-        this.setupAvatarClick();
-        this.renderProjects();
-        this.hideLoading();
-        this.startAnimationLoop();
-    }
-
-    detectPerformanceMode(): PerformanceMode {
-        // Check system specs and return performance mode
-        const nav = navigator as NavigatorExtended;
-        const memory = nav.deviceMemory || 4; // GB
-        const cores = navigator.hardwareConcurrency || 4;
-        const connection = nav.connection?.effectiveType || '4g';
-        
-        // Check for low-end devices
-        const isLowEnd = memory < 4 || cores < 4 || connection === 'slow-2g' || connection === '2g';
-        const isMedium = memory < 8 || cores < 8 || connection === '3g';
-        
-        if (isLowEnd) {
-            console.log('Performance mode: LOW - Reducing animations');
-            return 'low';
-        } else if (isMedium) {
-            console.log('Performance mode: MEDIUM - Moderate animations');
-            return 'medium';
-        } else {
-            console.log('Performance mode: HIGH - Full animations');
-            return 'high';
-        }
-    }
-
-    showLoading(): void {
-        const loading = document.getElementById('loading');
-        if (loading) {
-            loading.classList.remove('hidden');
-        }
-    }
-
-    hideLoading(): void {
-        const loading = document.getElementById('loading');
-        if (loading) {
-            setTimeout(() => {
-                loading.classList.add('hidden');
-                this.isLoading = false;
-            }, 800); // Reduced from 2000ms to 800ms
-        }
-    }
-
-    async loadProjects(): Promise<void> {
-        try {
-            const response = await fetch('projects.json');
-            this.projects = await response.json() as Project[];
-        } catch (error) {
-            console.error('Error loading projects:', error);
-            this.projects = [];
-        }
-    }
-
-    setupCanvas(): void {
-        this.canvas = document.getElementById('loomCanvas') as HTMLCanvasElement;
-        if (!this.canvas) return;
-        
-        this.ctx = this.canvas.getContext('2d');
-        this.resizeCanvas();
-        this.initializeThreads();
-        
-        // Hide interaction hint after first interaction
-        let hasInteracted = false;
-        const hint = document.querySelector('.interaction-hint') as HTMLElement;
-        
-        window.addEventListener('resize', () => this.resizeCanvas());
-        this.canvas.addEventListener('mousemove', (e: MouseEvent) => {
-            this.updateMouse(e);
-            if (!hasInteracted && hint) {
-                hint.style.opacity = '0';
-                setTimeout(() => hint.remove(), 500);
-                hasInteracted = true;
-            }
-        });
-        
-        // Touch support for mobile
-        this.canvas.addEventListener('touchmove', (e: TouchEvent) => {
-            e.preventDefault();
-            const touch = e.touches[0];
-            if (touch) {
-                const rect = this.canvas!.getBoundingClientRect();
-                this.mouse.x = touch.clientX - rect.left;
-                this.mouse.y = touch.clientY - rect.top;
-                if (!hasInteracted && hint) {
-                    hint.style.opacity = '0';
-                    setTimeout(() => hint.remove(), 500);
-                    hasInteracted = true;
-                }
-            }
-        });
-    }
-
-    resizeCanvas(): void {
-        if (!this.canvas) return;
-        
-        this.canvas.width = this.canvas.offsetWidth;
-        this.canvas.height = this.canvas.offsetHeight;
-    }
-
-    initializeThreads(): void {
-        this.threads = [];
-        let threadCount: number;
-        
-        // Adjust thread count based on performance mode
-        switch (this.performanceMode) {
-            case 'low':
-                threadCount = 30;
-                break;
-            case 'medium':
-                threadCount = 60;
-                break;
-            case 'high':
-            default:
-                threadCount = 100;
-                break;
-        }
-        
-        for (let i = 0; i < threadCount; i++) {
-            this.threads.push({
-                x: Math.random() * this.canvas!.width,
-                y: Math.random() * this.canvas!.height,
-                targetX: Math.random() * this.canvas!.width,
-                targetY: Math.random() * this.canvas!.height,
-                vx: (Math.random() - 0.5) * 0.2,
-                vy: (Math.random() - 0.5) * 0.2,
-                opacity: Math.random() * 0.6 + 0.3,
-                hue: Math.random() * 60 + 180, // Blue to cyan range
-                connections: [],
-                size: Math.random() * 2 + 1
-            });
-        }
-    }
-
-    updateMouse(e: MouseEvent): void {
-        const rect = this.canvas!.getBoundingClientRect();
-        this.mouse.x = e.clientX - rect.left;
-        this.mouse.y = e.clientY - rect.top;
-    }
-
-    animateThreads(): void {
-        if (!this.ctx || this.isLoading) return;
-        
-        this.ctx.clearRect(0, 0, this.canvas!.width, this.canvas!.height);
-        
-        // Update thread positions
-        this.threads.forEach(thread => {
-            // Mouse repulsion effect
-            const dx = this.mouse.x - thread.x;
-            const dy = this.mouse.y - thread.y;
-            const distance = Math.sqrt(dx * dx + dy * dy);
-            
-            if (distance < 200 && distance > 0) { // Repulsion radius
-                const force = (200 - distance) / 200;
-                // Strong repulsion away from mouse
-                thread.vx -= (dx / distance) * force;
-                thread.vy -= (dy / distance) * force;
-                
-                // Make threads glow and pulse when repelled
-                thread.opacity = Math.min(1, thread.opacity + force * 0.5);
-                thread.size = Math.min(4, thread.size + force * 2);
-            } else {
-                // Fade back to normal opacity and size
-                thread.opacity *= 0.98;
-                thread.opacity = Math.max(0.3, thread.opacity);
-                thread.size *= 0.98;
-                thread.size = Math.max(1, thread.size);
-            }
-            
-            // Update position with performance-aware movement
-            const moveSpeed = this.performanceMode === 'low' ? 0.3 : 0.5;
-            thread.x += thread.vx * moveSpeed;
-            thread.y += thread.vy * moveSpeed;
-            
-            // Drift towards target more slowly
-            const driftSpeed = this.performanceMode === 'low' ? 0.0003 : 0.0005;
-            thread.vx += (thread.targetX - thread.x) * driftSpeed;
-            thread.vy += (thread.targetY - thread.y) * driftSpeed;
-            
-            // Apply friction with velocity limiting
-            const friction = this.performanceMode === 'low' ? 0.88 : 0.92;
-            thread.vx *= friction;
-            thread.vy *= friction;
-            
-            // Limit maximum velocity for smoother movement
-            const maxVelocity = 3;
-            const velocity = Math.sqrt(thread.vx * thread.vx + thread.vy * thread.vy);
-            if (velocity > maxVelocity) {
-                thread.vx = (thread.vx / velocity) * maxVelocity;
-                thread.vy = (thread.vy / velocity) * maxVelocity;
-            }
-            
-            // Boundary wrapping
-            if (thread.x < 0) thread.x = this.canvas!.width;
-            if (thread.x > this.canvas!.width) thread.x = 0;
-            if (thread.y < 0) thread.y = this.canvas!.height;
-            if (thread.y > this.canvas!.height) thread.y = 0;
-            
-            // Update target less frequently
-            const targetUpdateRate = this.performanceMode === 'low' ? 0.0005 : 0.001;
-            if (Math.random() < targetUpdateRate) {
-                thread.targetX = Math.random() * this.canvas!.width;
-                thread.targetY = Math.random() * this.canvas!.height;
-            }
-        });
-        
-        // Draw connections with enhanced visibility near mouse
-        this.threads.forEach((thread, i) => {
-            this.threads.slice(i + 1).forEach(otherThread => {
-                const dx = thread.x - otherThread.x;
-                const dy = thread.y - otherThread.y;
-                const distance = Math.sqrt(dx * dx + dy * dy);
-                
-                if (distance < 120) { // Increased connection distance
-                    const opacity = (1 - distance / 120) * Math.min(thread.opacity, otherThread.opacity);
-                    
-                    // Enhanced visibility near mouse
-                    const mouseDistance = Math.min(
-                        Math.sqrt((this.mouse.x - thread.x) ** 2 + (this.mouse.y - thread.y) ** 2),
-                        Math.sqrt((this.mouse.x - otherThread.x) ** 2 + (this.mouse.y - otherThread.y) ** 2)
-                    );
-                    const mouseEffect = mouseDistance < 150 ? 1.5 : 1;
-                    
-                    this.ctx!.beginPath();
-                    this.ctx!.moveTo(thread.x, thread.y);
-                    this.ctx!.lineTo(otherThread.x, otherThread.y);
-                    this.ctx!.strokeStyle = `hsla(${thread.hue}, 70%, 60%, ${opacity * mouseEffect})`;
-                    this.ctx!.lineWidth = mouseEffect > 1 ? 2 : 1;
-                    this.ctx!.stroke();
-                }
-            });
-        });
-        
-        // Draw threads with variable sizes
-        this.threads.forEach(thread => {
-            this.ctx!.beginPath();
-            this.ctx!.arc(thread.x, thread.y, thread.size, 0, Math.PI * 2);
-            this.ctx!.fillStyle = `hsla(${thread.hue}, 70%, 60%, ${thread.opacity})`;
-            this.ctx!.fill();
-            
-            // Enhanced glow effect near mouse
-            const mouseDistance = Math.sqrt((this.mouse.x - thread.x) ** 2 + (this.mouse.y - thread.y) ** 2);
-            if (mouseDistance < 150) {
-                const glowIntensity = (150 - mouseDistance) / 150;
-                this.ctx!.beginPath();
-                this.ctx!.arc(thread.x, thread.y, thread.size * 3, 0, Math.PI * 2);
-                this.ctx!.fillStyle = `hsla(${thread.hue}, 70%, 60%, ${thread.opacity * 0.2 * glowIntensity})`;
-                this.ctx!.fill();
-            }
-        });
-    }
-
-    startAnimationLoop(): void {
-        let lastTime = 0;
-        let targetFPS: number;
-        
-        // Adjust FPS based on performance mode
-        switch (this.performanceMode) {
-            case 'low':
-                targetFPS = 15;
-                break;
-            case 'medium':
-                targetFPS = 24;
-                break;
-            case 'high':
-            default:
-                targetFPS = 30;
-                break;
-        }
-        
-        const frameTime = 1000 / targetFPS;
-        
-        const animate = (currentTime: number): void => {
-            if (currentTime - lastTime >= frameTime) {
-                this.animateThreads();
-                lastTime = currentTime;
-            }
-            requestAnimationFrame(animate);
-        };
-        animate(0);
-    }
-
-    setupNavigation(): void {
-        const navButtons = document.querySelectorAll('.nav-btn');
-        const sections = document.querySelectorAll('.projects-section');
-
-        navButtons.forEach(btn => {
-            btn.addEventListener('click', (e: Event) => {
-                e.preventDefault();
-                const targetSection = (btn as HTMLElement).dataset.section;
-                
-                // Update active button
-                navButtons.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                
-                // Show/hide sections with animation
-                sections.forEach(section => {
-                    if (section.id === targetSection) {
-                        section.classList.remove('hidden');
-                        (section as HTMLElement).style.animation = 'fadeInUp 0.6s ease-out forwards';
-                        this.currentSection = targetSection!;
-                        
-                        // Re-render projects when switching to project section
-                        setTimeout(() => this.renderProjects(), 100);
-                    } else {
-                        section.classList.add('hidden');
-                    }
-                });
-            });
-        });
-    }
-
-    setupModal(): void {
-        this.modal = document.getElementById('projectModal');
-        this.modalBody = document.getElementById('modalBody');
-        this.modalClose = document.getElementById('modalClose');
-        
-        if (this.modalClose) {
-            this.modalClose.addEventListener('click', () => this.closeModal());
-        }
-        
-        if (this.modal) {
-            this.modal.addEventListener('click', (e: Event) => {
-                if (e.target === this.modal) {
-                    this.closeModal();
-                }
-            });
-        }
-        
-        document.addEventListener('keydown', (e: KeyboardEvent) => {
-            if (e.key === 'Escape') {
-                this.closeModal();
-            }
-        });
-    }
-
-    openModal(project: Project): void {
-        if (!this.modal || !this.modalBody) return;
-        
-        this.modalBody.innerHTML = `
-            <div class="modal-project">
-                <div class="modal-header">
-                    <h2 class="modal-title">${project.title}</h2>
-                    <span class="modal-category ${project.category}">${project.category}</span>
-                </div>
-                <p class="modal-description">${project.description}</p>
-                <div class="modal-tech">
-                    ${project.technologies.map(tech => 
-                        `<span class="tech-tag" data-tech="${tech.toLowerCase()}">${tech}</span>`
-                    ).join('')}
-                </div>
-                <div class="modal-links">
-                    ${project.github ? `
-                        <a href="${project.github}" target="_blank" class="project-link">
-                            <i class="fab fa-github"></i>
-                            <span>View Code</span>
-                        </a>
-                    ` : ''}
-                    ${project.website ? `
-                        <a href="${project.website}" target="_blank" class="project-link">
-                            <i class="fas fa-external-link-alt"></i>
-                            <span>Live Demo</span>
-                        </a>
-                    ` : ''}
-                </div>
-            </div>
-        `;
-        
-        this.modal.classList.add('active');
-        document.body.style.overflow = 'hidden';
-    }
-
-    closeModal(): void {
-        if (this.modal) {
-            this.modal.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-    }
-
-    setupAvatarClick(): void {
-        // Avatar click functionality removed since about section is integrated
-        return;
-    }
-
-    setupScrollAnimations(): void {
-        const observerOptions: IntersectionObserverInit = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-        
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('revealed');
-                }
-            });
-        }, observerOptions);
-        
-        // Observe all scroll-reveal elements
-        document.querySelectorAll('.scroll-reveal').forEach(el => {
-            observer.observe(el);
-        });
-        
-        // Add scroll reveal classes to sections
-        document.querySelectorAll('.projects-section').forEach(section => {
-            section.classList.add('scroll-reveal');
-        });
-    }
-
-    renderProjects(): void {
-        const majorGrid = document.getElementById('major-projects');
-        const minorGrid = document.getElementById('minor-projects');
-        
-        if (!majorGrid || !minorGrid) return;
-        
-        // Clear existing projects
-        majorGrid.innerHTML = '';
-        minorGrid.innerHTML = '';
-
-        // Filter and render projects
-        const majorProjects = this.projects.filter(p => p.category === 'major');
-        const minorProjects = this.projects.filter(p => p.category === 'minor');
-
-        this.renderProjectMasonry(majorProjects, majorGrid);
-        this.renderProjectMasonry(minorProjects, minorGrid);
-        
-        // Setup scroll animations for new cards
-        this.setupProjectCardAnimations();
-    }
-
-    renderProjectMasonry(projects: Project[], container: HTMLElement): void {
-        projects.forEach((project, index) => {
-            const projectCard = this.createProjectCard(project);
-            projectCard.classList.add('scroll-reveal', `delay-${Math.min(index, 4)}`);
-            container.appendChild(projectCard);
-        });
-    }
-
-    createProjectCard(project: Project): HTMLElement {
-        const card = document.createElement('div');
-        card.className = 'project-card';
-        card.setAttribute('data-category', project.category);
-        
-        // Add click handler for modal
-        card.addEventListener('click', () => this.openModal(project));
-        
-        // Category indicator
-        const categoryIndicator = document.createElement('div');
-        categoryIndicator.className = `project-category ${project.category}`;
-        
-        const title = document.createElement('h3');
-        title.className = 'project-title';
-        title.textContent = project.title;
-        
-        const description = document.createElement('p');
-        description.className = 'project-description';
-        description.textContent = project.description;
-        
-        const techContainer = document.createElement('div');
-        techContainer.className = 'project-tech';
-        
-        project.technologies.forEach(tech => {
-            const techTag = document.createElement('span');
-            techTag.className = 'tech-tag';
-            techTag.setAttribute('data-tech', tech.toLowerCase());
-            techTag.textContent = tech;
-            techContainer.appendChild(techTag);
-        });
-        
-        const linksContainer = document.createElement('div');
-        linksContainer.className = 'project-links';
-        
-        if (project.github) {
-            const githubLink = this.createProjectLink(project.github, 'fab fa-github', 'GitHub');
-            linksContainer.appendChild(githubLink);
-        }
-        
-        if (project.website) {
-            const websiteLink = this.createProjectLink(project.website, 'fas fa-external-link-alt', 'Live Site');
-            linksContainer.appendChild(websiteLink);
-        }
-        
-        card.appendChild(categoryIndicator);
-        card.appendChild(title);
-        card.appendChild(description);
-        card.appendChild(techContainer);
-        card.appendChild(linksContainer);
-        
-        return card;
-    }
-
-    createProjectLink(url: string, iconClass: string, text: string): HTMLElement {
-        const link = document.createElement('a');
-        link.href = url;
-        link.target = '_blank';
-        link.className = 'project-link';
-        
-        // Prevent modal from opening when clicking links
-        link.addEventListener('click', (e: Event) => {
-            e.stopPropagation();
-        });
-        
-        const icon = document.createElement('i');
-        icon.className = iconClass;
-        
-        const linkText = document.createElement('span');
-        linkText.textContent = text;
-        
-        link.appendChild(icon);
-        link.appendChild(linkText);
-        
-        return link;
-    }
-
-    setupProjectCardAnimations(): void {
-        const observerOptions: IntersectionObserverInit = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('revealed');
-                }
-            });
-        }, observerOptions);
-
-        // Observe all project cards
-        document.querySelectorAll('.project-card:not(.revealed)').forEach(card => {
-            observer.observe(card);
-        });
-    }
+function startClock(): void {
+  const clock = document.getElementById('clock');
+  if (!clock) return;
+  const pad = (n: number): string => String(n).padStart(2, '0');
+  const tick = (): void => {
+    const d = new Date();
+    clock.textContent = `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+  };
+  tick();
+  setInterval(tick, 1000);
 }
 
-// Initialize the Digital Weaver Portfolio
+function buildTicker(): void {
+  const track = document.getElementById('ticker');
+  if (!track) return;
+  const tokens = [...TICKER, ...TICKER];
+  for (const t of tokens) track.append(el('span', undefined, t));
+}
+
+// ---- boot sequence ----
+
+const BOOT_LINES = [
+  'booting fwd-os v4.8 ...',
+  'mounting /projects ......... [ok]',
+  'loading rust toolchain ..... [ok]',
+  'linking c++ runtime ........ [ok]',
+  'spawning pixels ............ [ok]',
+  'ready.',
+];
+
+function runBoot(after: () => void): void {
+  const boot = document.getElementById('boot');
+  const log = document.getElementById('bootlog');
+  const seen = sessionStorage.getItem('booted') === '1';
+
+  if (!boot || !log || reduceMotion || seen) {
+    boot?.setAttribute('hidden', '');
+    after();
+    return;
+  }
+
+  let finished = false;
+  const finish = (): void => {
+    if (finished) return;
+    finished = true;
+    sessionStorage.setItem('booted', '1');
+    boot.classList.add('done');
+    setTimeout(() => boot.setAttribute('hidden', ''), 400);
+    after();
+  };
+
+  // Let the user skip the boot.
+  boot.addEventListener('click', finish);
+  const skip = (e: KeyboardEvent): void => {
+    e.preventDefault();
+    finish();
+    document.removeEventListener('keydown', skip);
+  };
+  document.addEventListener('keydown', skip);
+
+  let line = 0;
+  let col = 0;
+  const type = (): void => {
+    if (finished) return;
+    if (line >= BOOT_LINES.length) {
+      setTimeout(finish, 350);
+      return;
+    }
+    const text = BOOT_LINES[line];
+    log.textContent = BOOT_LINES.slice(0, line).join('\n') + (line ? '\n' : '') + text.slice(0, col);
+    if (col < text.length) {
+      col += 1;
+      setTimeout(type, 14);
+    } else {
+      line += 1;
+      col = 0;
+      setTimeout(type, 120);
+    }
+  };
+  type();
+}
+
+// ---- pixel rain (konami) ----
+
+const RAIN_GLYPHS = '01<>/{}[]#*+=';
+function pixelRain(): void {
+  if (reduceMotion) return;
+  const count = 44;
+  for (let i = 0; i < count; i++) {
+    const drop = el('span', 'rain', RAIN_GLYPHS[i % RAIN_GLYPHS.length]);
+    drop.style.left = `${(i / count) * 100}%`;
+    const dur = 2 + (i % 7) * 0.4;
+    drop.style.animationDuration = `${dur}s`;
+    drop.style.animationDelay = `${(i % 11) * 0.12}s`;
+    document.body.append(drop);
+    setTimeout(() => drop.remove(), (dur + 1.5) * 1000);
+  }
+}
+
+function toggleAmber(): void {
+  const on = document.documentElement.classList.toggle('amber');
+  toast(on ? 'konami accepted :: amber crt' : 'back to cool');
+}
+
+function setupKonami(): void {
+  const seq = [
+    'ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown',
+    'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a',
+  ];
+  let pos = 0;
+  document.addEventListener('keydown', (e) => {
+    const key = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+    pos = key === seq[pos] ? pos + 1 : (key === seq[0] ? 1 : 0);
+    if (pos === seq.length) {
+      pos = 0;
+      toggleAmber();
+      pixelRain();
+    }
+  });
+}
+
+// ---- project modal ----
+
+let lastFocus: HTMLElement | null = null;
+
+function stackEls(p: Project): HTMLElement {
+  const stack = el('div', 'stack');
+  for (const tech of p.stack) stack.append(el('span', 'chip', tech));
+  return stack;
+}
+
+function linkEls(p: Project): HTMLAnchorElement[] {
+  const out: HTMLAnchorElement[] = [];
+  if (p.links.repo) out.push(anchor(p.links.repo, 'plink primary', 'code >'));
+  if (p.links.site) out.push(anchor(p.links.site, 'plink', 'live >'));
+  return out;
+}
+
+function setupModal(): (p: Project) => void {
+  const modal = document.getElementById('modal');
+  const box = document.getElementById('modalBox');
+  const file = document.getElementById('modalFile');
+  const body = document.getElementById('modalBody');
+  const closeBtn = document.getElementById('modalClose');
+
+  const close = (): void => {
+    if (!modal) return;
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    if (lastFocus) lastFocus.focus();
+  };
+
+  const open = (p: Project): void => {
+    if (!modal || !box || !file || !body) return;
+    lastFocus = document.activeElement as HTMLElement;
+    box.className = `modal-box k-${p.kind}`;
+    file.textContent = `${p.name.toLowerCase()}.md`;
+
+    body.replaceChildren();
+    const head = el('div', 'm-head');
+    head.append(el('h3', undefined, p.name), el('span', 'badge', p.kind));
+    body.append(head);
+    body.append(el('p', 'modal-desc', p.description));
+    body.append(stackEls(p));
+
+    const links = el('div', 'card-links');
+    for (const a of linkEls(p)) links.append(a);
+    body.append(links);
+
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    closeBtn?.focus();
+  };
+
+  closeBtn?.addEventListener('click', close);
+  modal?.addEventListener('click', (e) => {
+    if (e.target === modal) close();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal?.classList.contains('open')) close();
+  });
+
+  return open;
+}
+
+// ---- cards ----
+
+function projectCard(p: Project, index: number, open: (p: Project) => void): HTMLElement {
+  const card = el('article', `card k-${p.kind}`);
+  card.tabIndex = 0;
+  card.setAttribute('role', 'button');
+  card.setAttribute('aria-label', `${p.name} - details`);
+  if (!reduceMotion) card.classList.add('pre');
+
+  const head = el('div', 'card-head');
+  head.append(el('h3', undefined, p.name), el('span', 'badge', p.kind));
+  card.append(head);
+
+  card.append(el('p', 'tagline', p.tagline));
+  card.append(stackEls(p));
+
+  const links = el('div', 'card-links');
+  for (const a of linkEls(p)) {
+    a.addEventListener('click', (e) => e.stopPropagation());
+    links.append(a);
+  }
+  card.append(links);
+
+  card.addEventListener('click', () => open(p));
+  card.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      open(p);
+    }
+  });
+
+  if (!reduceMotion) {
+    setTimeout(() => card.classList.remove('pre'), 90 * index + 120);
+  }
+
+  return card;
+}
+
+// ---- command palette ----
+
+function setupPalette(projects: Project[], open: (p: Project) => void): void {
+  const palette = document.getElementById('palette');
+  const input = document.getElementById('paletteInput') as HTMLInputElement | null;
+  const list = document.getElementById('paletteList');
+  const trigger = document.getElementById('paletteTrigger');
+  if (!palette || !input || !list) return;
+
+  const items: PaletteItem[] = [];
+  for (const p of projects) {
+    items.push({
+      label: `open ${p.name}`,
+      hint: p.kind,
+      kind: p.kind,
+      keywords: `${p.name} ${p.kind} ${p.tagline} ${p.stack.join(' ')}`.toLowerCase(),
+      run: () => open(p),
+    });
+  }
+  items.push(
+    { label: 'github profile', hint: 'link', keywords: 'github profile code', run: () => openUrl('https://github.com/FizzWizZleDazzle') },
+    { label: 'email me', hint: 'contact', keywords: 'email contact hello mail', run: () => { window.location.href = 'mailto:hello@fizzwizzledazzle.dev'; } },
+    { label: 'view source', hint: 'link', keywords: 'source repo site code', run: () => openUrl('https://github.com/FizzWizZleDazzle/FizzWizZleDazzle') },
+    { label: 'toggle amber crt', hint: 'theme', keywords: 'amber theme crt color konami', run: () => toggleAmber() },
+  );
+
+  let filtered: PaletteItem[] = items;
+  let active = 0;
+
+  const render = (): void => {
+    list.replaceChildren();
+    if (filtered.length === 0) {
+      list.append(el('li', 'palette-empty', 'no matches'));
+      return;
+    }
+    filtered.forEach((it, i) => {
+      const li = el('li', `palette-item${i === active ? ' active' : ''}`);
+      if (it.kind) li.classList.add(`k-${it.kind}`);
+      if (it.kind) li.append(el('span', 'p-kind', it.kind));
+      li.append(el('span', 'p-name', it.label), el('span', 'p-desc', it.hint));
+      li.addEventListener('click', () => { run(it); });
+      li.addEventListener('mousemove', () => { active = i; paint(); });
+      list.append(li);
+    });
+  };
+
+  const paint = (): void => {
+    [...list.children].forEach((c, i) => c.classList.toggle('active', i === active));
+  };
+
+  const filter = (q: string): void => {
+    const query = q.trim().toLowerCase();
+    filtered = query
+      ? items.filter((it) => it.keywords.includes(query) || it.label.toLowerCase().includes(query))
+      : items;
+    active = 0;
+    render();
+  };
+
+  const close = (): void => {
+    palette.classList.remove('open');
+    palette.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  };
+
+  const openPalette = (): void => {
+    input.value = '';
+    filter('');
+    palette.classList.add('open');
+    palette.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => input.focus(), 0);
+  };
+
+  const run = (it: PaletteItem): void => {
+    close();
+    it.run();
+  };
+
+  input.addEventListener('input', () => filter(input.value));
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      active = Math.min(active + 1, filtered.length - 1);
+      paint();
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      active = Math.max(active - 1, 0);
+      paint();
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      if (filtered[active]) run(filtered[active]);
+    } else if (e.key === 'Escape') {
+      close();
+    }
+  });
+
+  palette.addEventListener('click', (e) => {
+    if (e.target === palette) close();
+  });
+  trigger?.addEventListener('click', openPalette);
+
+  document.addEventListener('keydown', (e) => {
+    const typing = document.activeElement instanceof HTMLInputElement;
+    const isOpen = palette.classList.contains('open');
+    if (!isOpen && !typing && e.key === '/') {
+      e.preventDefault();
+      openPalette();
+    } else if (!isOpen && (e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+      e.preventDefault();
+      openPalette();
+    }
+  });
+}
+
+// ---- data + boot ----
+
+async function loadProjects(): Promise<Project[]> {
+  try {
+    const res = await fetch('projects.json');
+    return (await res.json()) as Project[];
+  } catch (err) {
+    console.error('Failed to load projects:', err);
+    return [];
+  }
+}
+
+async function main(): Promise<void> {
+  const year = document.getElementById('year');
+  if (year) year.textContent = String(new Date().getFullYear());
+
+  startClock();
+  buildTicker();
+  setupKonami();
+
+  const open = setupModal();
+  const projects = await loadProjects();
+
+  const grid = document.getElementById('grid');
+  if (grid) projects.forEach((p, i) => grid.append(projectCard(p, i, open)));
+
+  setupPalette(projects, open);
+
+  runBoot(() => {
+    const role = document.getElementById('role');
+    if (role) typewriter(role, ROLE);
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-    new DigitalWeaverPortfolio();
+  void main();
 });

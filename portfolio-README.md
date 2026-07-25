@@ -1,116 +1,50 @@
-# Portfolio Website
+# Portfolio site
 
-A modern, dark-themed portfolio website with smooth animations and dynamic project loading. Built with vanilla HTML, CSS, and JavaScript for minimal dependencies and fast loading.
+Source for https://fizzwizzledazzle.github.io - a pixel/retro developer
+portfolio built with TypeScript and Vite. Dark CRT theme, no runtime
+dependencies, projects loaded from a JSON file.
 
-## Features
+## Develop
 
-- 🌙 **Dark Theme**: Modern dark design with gradient accents
-- ✨ **Smooth Animations**: Fade-in effects, hover animations, and transitions
-- 📱 **Responsive Design**: Optimized for desktop, tablet, and mobile devices
-- 🔄 **Dynamic Loading**: Projects loaded from JSON file for easy updates
-- 📂 **Project Categories**: Separate sections for major and minor projects
-- 🔗 **Flexible Links**: Support for GitHub-only, website-only, or both types of links
-- ⚡ **Fast Loading**: No framework dependencies, pure vanilla JavaScript
+```bash
+npm install
+npm run dev      # vite dev server on http://localhost:3000
+npm run build    # type-check + bundle to dist/
+npm run preview  # serve the production build
+```
 
-## Getting Started
+Deployment is automated: pushing to `main` builds the site and publishes
+`dist/` to GitHub Pages (see `.github/workflows/deploy.yml`).
 
-### Local Development
+## Editing projects
 
-1. Clone the repository
-2. Start a local server:
-   ```bash
-   python3 -m http.server 8000
-   ```
-3. Open `http://localhost:8000` in your browser
-
-### GitHub Pages Deployment
-
-1. Enable GitHub Pages in repository settings
-2. Select "Deploy from a branch" and choose `main` branch
-3. Your portfolio will be available at `https://yourusername.github.io/repositoryname`
-
-## Updating Projects
-
-To add or modify projects, simply edit the `projects.json` file. The website will automatically load and display the updated projects.
-
-### Project Structure
+Projects live in `public/projects.json`. Each entry:
 
 ```json
 {
-  "title": "Project Name",
-  "description": "Brief description of the project",
-  "technologies": ["Tech1", "Tech2", "Tech3"],
-  "category": "major", // or "minor"
-  "github": "https://github.com/user/repo", // optional
-  "website": "https://example.com" // optional
+  "name": "Lumen",
+  "kind": "framework",
+  "tagline": "One-line summary shown on the card.",
+  "description": "Longer description (not currently rendered).",
+  "stack": ["Rust", "wgpu"],
+  "links": { "site": "https://...", "repo": "https://..." }
 }
 ```
 
-### Project Categories
+`kind` sets the accent color and can be `framework`, `platform`, `library`,
+or `engine`. Set `site` or `repo` to `null` to hide that link.
 
-- **Major Projects**: Significant projects, frameworks, or tools
-- **Minor Projects**: Small utilities, automation scripts, or quick tools
-
-### Link Options
-
-Each project can have:
-- Only a GitHub link (`"github"` field, `"website": null`)
-- Only a website link (`"website"` field, `"github": null`)
-- Both GitHub and website links
-- No links (though not recommended)
-
-## Customization
-
-### Personal Information
-
-Edit the following in `index.html`:
-- Name and tagline in the header section
-- Tech stack badges
-- Social links (GitHub, email)
-- About section content
-
-### Styling
-
-Modify `styles.css` to customize:
-- Color scheme (CSS variables in `:root`)
-- Animations and transitions
-- Layout and spacing
-- Typography
-
-### Behavior
-
-Update `script.js` to modify:
-- Animation timings
-- Project loading logic
-- Navigation behavior
-- Additional effects
-
-## File Structure
+## Files
 
 ```
-portfolio/
-├── index.html          # Main HTML structure
-├── styles.css          # Styling and animations
-├── script.js           # Dynamic functionality
-├── projects.json       # Project data (easily editable)
-└── README.md          # This documentation
+index.html              markup and intro window
+styles.css              pixel/CRT theme
+src/script.ts           renders project cards, typewriter intro
+public/projects.json    project data (served at /projects.json)
 ```
 
-## Browser Support
+## Customize
 
-- Modern browsers (Chrome, Firefox, Safari, Edge)
-- ES6+ JavaScript features used
-- CSS Grid and Flexbox for layouts
-- CSS Custom Properties for theming
-
-## Performance Features
-
-- Minimal dependencies (no frameworks)
-- Optimized animations using CSS transforms
-- Lazy loading animations with Intersection Observer
-- Efficient DOM manipulation
-- Compressed assets
-
-## Contributing
-
-Feel free to submit issues or pull requests to improve the portfolio template!
+- Colors and fonts: CSS variables in `:root` (`styles.css`).
+- Intro text and links: the `.hero` block in `index.html`.
+- Card layout and typewriter role: `src/script.ts`.

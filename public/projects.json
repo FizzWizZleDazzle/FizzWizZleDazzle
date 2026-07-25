@@ -1,58 +1,90 @@
 [
   {
-    "title": "Bevy Editor",
-    "description": "A comprehensive, extensible, and visual game editor for the Bevy game engine. Provides real-time scene editing, entity-component management, asset Browse, and a plugin-based architecture for custom tooling, all built on Bevy's data-driven ECS principles.",
-    "technologies": ["Rust", "C++", "Bevy", "Qt", "WGPU", "Vulkan"],
-    "category": "major",
-    "github": null,
-    "website": "https://editor.fizzwizzledazzle.dev"
+    "name": "Lumen",
+    "kind": "framework",
+    "tagline": "Declarative, markup-first UI framework for native desktop apps.",
+    "description": "Author a .lmn markup tree, a CSS-subset stylesheet, and an optional script; lumenc compiles them to a layout IR and runs it on a two-world ECS core with GPU rendering and hot reload that preserves state across a swap.",
+    "stack": ["Rust", "ECS", "GPU"],
+    "links": {
+      "site": "https://lumenfx.dev",
+      "repo": "https://github.com/lumen-fx/lumen"
+    }
   },
   {
-    "title": "Taskdown",
-    "description": "A React TypeScript application with a visual Kanban board interface and parser that converts Jira-style Markdown to structured board data and back. Perfect for managing development tasks with seamless integration between human-readable documentation and programmatic task management.",
-    "technologies": ["Typescript", "Rust", "HTML", "CSS", "React", "Markdown"],
-    "category": "major",
-    "github": "https://github.com/FizzWizZleDazzle/Taskdown",
-    "website": "https://taskdown.fizzwizzledazzle.dev"
+    "name": "LocusMath",
+    "kind": "platform",
+    "tagline": "Competitive math platform with ELO-based ranking.",
+    "description": "Practice algebra, calculus, and linear algebra against generated problems graded by a computer algebra system. Instant feedback and a competitive ELO ladder.",
+    "stack": ["Rust", "HTML", "CSS"],
+    "links": {
+      "site": "https://locusmath.org",
+      "repo": null
+    }
   },
   {
-    "title": "FastIO",
-    "description": "FastIO is an optimized Java I/O library specifically designed for competitive programming contests like USACO. It provides lightning-fast input/output operations with a simple, clean API that allows you to focus on solving problems rather than dealing with slow I/O.",
-    "technologies": ["Java"],
-    "category": "minor",
-    "github": "https://github.com/FizzWizZleDazzle/FastIO",
-    "website": null
+    "name": "Drift",
+    "kind": "engine",
+    "tagline": "Lightweight 2D game engine in C++20 with a Bevy-inspired ECS.",
+    "description": "Component-based 2D engine built on flecs, with SDL3 GPU rendering, Box2D physics, a plugin architecture, parallel scheduling, particle systems, sprite animation, and Aseprite/Tiled asset import.",
+    "stack": ["C++", "flecs", "SDL3", "Box2D"],
+    "links": {
+      "site": null,
+      "repo": "https://github.com/FizzWizZleDazzle/Drift"
+    }
   },
   {
-    "title": "Human Typer",
-    "description": "A sophisticated Python application that simulates realistic human typing behavior with natural mistakes, speed fluctuations, and corrections.",
-    "technologies": ["Python", "Tkinter"],
-    "category": "minor",
-    "github": "https://github.com/FizzWizZleDazzle/Human-Typer",
-    "website": null
+    "name": "Chessus",
+    "kind": "engine",
+    "tagline": "High-performance chess engine with neural-network evaluation.",
+    "description": "Bitboard move generation, NNUE evaluation, and multi-threaded search with null-move pruning and late move reductions. Speaks UCI, with a PyTorch training pipeline for self-play data and network tuning.",
+    "stack": ["C", "NNUE", "UCI", "PyTorch"],
+    "links": {
+      "site": null,
+      "repo": "https://github.com/FizzWizZleDazzle/Chessus"
+    }
   },
   {
-    "title": "Vellum",
-    "description": "Vellum is a command-line interface (CLI) for orchestrating collectives of AI agents.",
-    "technologies": ["Rust"],
-    "category": "major",
-    "github": null,
-    "website": null
+    "name": "Tensor-Frame",
+    "kind": "library",
+    "tagline": "PyTorch-like tensor library for Rust with multiple backends.",
+    "description": "GPU-accelerated numerical computing for Rust. CPU (Rayon), WGPU (Metal/Vulkan/DX12), and CUDA backends with automatic selection and fallback, NumPy/PyTorch-style broadcasting, and zero-copy operations.",
+    "stack": ["Rust", "WGPU", "CUDA", "Rayon"],
+    "links": {
+      "site": "https://trainpioneers.github.io/Tensor-Frame/",
+      "repo": "https://github.com/TrainPioneers/Tensor-Frame"
+    }
   },
   {
-    "title": "Nivaro",
-    "description": "A centralized platform for managing and growing clubs. Designed as an all-in-one solution, it offers robust tools for membership management, event scheduling with RSVPs, and budget tracking.",
-    "technologies": ["Typescript", "Next.js", "PostgreSQL"],
-    "category": "major",
-    "github": "https://github.com/FizzWizZleDazzle/Nivaro",
-    "website": null
+    "name": "bevy_ufbx",
+    "kind": "library",
+    "tagline": "FBX asset loader for Bevy, powered by ufbx.",
+    "description": "Imports FBX models into Bevy: triangle meshes with normals and UVs, PBR materials, skeletal skinning, scene hierarchies, and lights. Configurable import settings and support across Bevy 0.17 to 0.19.",
+    "stack": ["Rust", "Bevy", "ufbx"],
+    "links": {
+      "site": null,
+      "repo": "https://github.com/FizzWizZleDazzle/bevy_ufbx"
+    }
   },
   {
-    "title": "Tensor-Frame",
-    "description": "A high-performance, PyTorch-like tensor library for Rust with support for multiple computational backends.",
-    "technologies": ["Rust", "Cuda", "WGPU"],
-    "category": "major",
-    "github": "https://github.com/TrainPioneers/Tensor-Frame",
-    "website": "https://tensorframe.trainpioneers.com/"
+    "name": "symengine.js",
+    "kind": "library",
+    "tagline": "WebAssembly build of SymEngine, a fast symbolic math library.",
+    "description": "Symbolic computation in the browser: expression manipulation, differentiation, trig, and number theory, with code generation to C, JavaScript, LaTeX, and MathML. A clean JS/TS API over SymEngine's C++ engine compiled to WASM.",
+    "stack": ["TypeScript", "WebAssembly", "C++"],
+    "links": {
+      "site": "https://symengine.fizzwizzledazzle.dev/",
+      "repo": "https://github.com/FizzWizZleDazzle/symengine.js"
+    }
+  },
+  {
+    "name": "FastIO",
+    "kind": "library",
+    "tagline": "Fast Java I/O for competitive programming.",
+    "description": "Lightweight buffered input/output built for contests like USACO. Simple, clean API so the I/O layer stays out of the way while you solve the problem.",
+    "stack": ["Java"],
+    "links": {
+      "site": null,
+      "repo": "https://github.com/FizzWizZleDazzle/FastIO"
+    }
   }
 ]

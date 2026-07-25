@@ -3,95 +3,173 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FizzWizZleDazzle - Portfolio</title>
+
+    <title>fizzwizzledazzle - systems &amp; tools developer</title>
+    <meta name="description" content="Portfolio of fizzwizzledazzle - a systems and tools developer building game-engine tooling, desktop-first apps, and low-level libraries in Rust and C++. Projects: Lumen, LocusMath, Drift, Chessus, Tensor-Frame, and more.">
+    <meta name="author" content="fizzwizzledazzle">
+    <meta name="keywords" content="fizzwizzledazzle, rust developer, c++, game engine, ecs, gpu, portfolio, lumen, locusmath, drift, chessus, tensor-frame, bevy, systems programming">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#0f1418">
+    <link rel="canonical" href="https://fizzwizzledazzle.github.io/">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://fizzwizzledazzle.github.io/">
+    <meta property="og:title" content="fizzwizzledazzle - systems &amp; tools developer">
+    <meta property="og:description" content="Game-engine tooling, desktop-first apps, and low-level libraries in Rust and C++. Lumen, LocusMath, Drift, Chessus, Tensor-Frame, and more.">
+    <meta property="og:image" content="https://avatars.githubusercontent.com/u/126825095?v=4">
+    <meta property="og:image:alt" content="fizzwizzledazzle avatar">
+    <meta property="og:site_name" content="fizzwizzledazzle">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="fizzwizzledazzle - systems &amp; tools developer">
+    <meta name="twitter:description" content="Game-engine tooling, desktop-first apps, and low-level libraries in Rust and C++.">
+    <meta name="twitter:image" content="https://avatars.githubusercontent.com/u/126825095?v=4">
+
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="apple-touch-icon" href="favicon.png">
+    <link rel="stylesheet" href="fonts.css">
     <link rel="stylesheet" href="styles.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "fizzwizzledazzle",
+      "url": "https://fizzwizzledazzle.github.io/",
+      "email": "hello@fizzwizzledazzle.dev",
+      "jobTitle": "Systems & tools developer",
+      "description": "Systems and tools developer building game-engine tooling, desktop-first apps, and low-level libraries in Rust and C++.",
+      "image": "https://avatars.githubusercontent.com/u/126825095?v=4",
+      "sameAs": ["https://github.com/FizzWizZleDazzle"],
+      "knowsAbout": ["Rust", "C++", "Game engines", "GPU rendering", "ECS", "Systems programming"]
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "name": "Projects by fizzwizzledazzle",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Lumen", "url": "https://lumenfx.dev" },
+        { "@type": "ListItem", "position": 2, "name": "LocusMath", "url": "https://locusmath.org" },
+        { "@type": "ListItem", "position": 3, "name": "Drift", "url": "https://github.com/FizzWizZleDazzle/Drift" },
+        { "@type": "ListItem", "position": 4, "name": "Chessus", "url": "https://github.com/FizzWizZleDazzle/Chessus" },
+        { "@type": "ListItem", "position": 5, "name": "Tensor-Frame", "url": "https://github.com/TrainPioneers/Tensor-Frame" },
+        { "@type": "ListItem", "position": 6, "name": "bevy_ufbx", "url": "https://github.com/FizzWizZleDazzle/bevy_ufbx" },
+        { "@type": "ListItem", "position": 7, "name": "symengine.js", "url": "https://symengine.fizzwizzledazzle.dev/" },
+        { "@type": "ListItem", "position": 8, "name": "FastIO", "url": "https://github.com/FizzWizZleDazzle/FastIO" }
+      ]
+    }
+    </script>
 </head>
 <body>
-    <!-- Loading Animation -->
-    <div class="loading-screen" id="loading">
-        <div class="weaving-animation">
-            <div class="thread thread-1"></div>
-            <div class="thread thread-2"></div>
-            <div class="thread thread-3"></div>
-        </div>
-        <div class="loading-text">Weaving digital threads...</div>
-    </div>
+    <!-- Boot sequence -->
+    <div class="boot" id="boot" aria-hidden="true"><pre class="bootlog" id="bootlog"></pre></div>
 
-    <div class="container">
-        <!-- Hero Section - "The Loom" -->
-        <header class="hero-section" id="hero">
-            <canvas class="loom-canvas" id="loomCanvas"></canvas>
-            <div class="interaction-hint">Move your mouse to interact with the threads</div>
-            <div class="hero-content">
-                <div class="profile-image">
-                    <img src="https://avatars.githubusercontent.com/u/126825095?v=4" 
-                         alt="FizzWizZleDazzle" 
-                         class="avatar"
-                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                    <div class="avatar avatar-fallback" style="display: none;">FWD</div>
-                </div>
-                <h1 class="name">FizzWizZleDazzle</h1>
-                <p class="tagline">Weaving ideas into digital reality</p>
-                <div class="about-inline">
-                    <p>🔭 Currently building <span class="glowing-thread">game engine tools</span> and <span class="glowing-thread">desktop-first apps</span></p>
-                    <p>🧠 Interested in <span class="glowing-thread">Rust</span>, <span class="glowing-thread">Flutter</span>, and <span class="glowing-thread">modern graphics systems</span></p>
-                    <p>🎮 Love clean UI/UX, powerful low-level tooling, and solving hard problems</p>
-                    <p>⚡ Fun fact: I hate bloatware and <em>love</em> minimal, efficient systems</p>
-                </div>
-                <div class="tech-stack">
-                    <span class="tech-badge">Rust</span>
-                    <span class="tech-badge">Bevy</span>
-                    <span class="tech-badge">Flutter</span>
-                    <span class="tech-badge">Python</span>
-                </div>
-                <div class="social-links">
-                    <a href="https://github.com/FizzWizZleDazzle" target="_blank" class="social-link">
-                        <i class="fab fa-github"></i>
-                    </a>
-                    <a href="mailto:arturmisiurev@gmail.com" class="social-link">
-                        <i class="fas fa-envelope"></i>
-                    </a>
+    <div class="scanlines" aria-hidden="true"></div>
+
+    <div class="wrap">
+        <!-- Intro window -->
+        <header class="window">
+            <div class="titlebar">
+                <span class="dots"><i></i><i></i><i></i></span>
+                <span class="title">guest@fwd: ~/fizzwizzledazzle</span>
+                <span class="clock" id="clock">--:--:--</span>
+            </div>
+            <div class="window-body hero">
+                <img src="https://avatars.githubusercontent.com/u/126825095?v=4"
+                     alt="fizzwizzledazzle avatar" class="avatar" width="120" height="120"
+                     onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'avatar avatar-fallback',textContent:'fwd'}))">
+                <div class="hero-text">
+                    <p class="cmd"><span class="usr">guest@fwd</span>:<span class="pth">~</span>$ whoami</p>
+                    <h1 class="name">fizzwizzledazzle</h1>
+                    <p class="role" id="role" aria-label="systems and tools developer"></p>
+                    <p class="status"><span class="dot"></span> online &middot; open to interesting problems</p>
+                    <ul class="facts">
+                        <li>building game-engine tools and desktop-first apps</li>
+                        <li>into rust, graphics, and low-level systems</li>
+                        <li>likes clean ui, small binaries, hard problems</li>
+                        <li>allergic to bloatware</li>
+                    </ul>
+                    <nav class="links" aria-label="social links">
+                        <a href="https://github.com/FizzWizZleDazzle" target="_blank" rel="noopener" class="btn">
+                            <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+                            <span>github</span>
+                        </a>
+                        <a href="mailto:hello@fizzwizzledazzle.dev" class="btn">
+                            <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M1 3h14v10H1V3zm1.2 1L8 8.3 13.8 4H2.2zM14 5.1l-6 4.4-6-4.4V12h12V5.1z"/></svg>
+                            <span>email</span>
+                        </a>
+                        <button type="button" class="btn" id="paletteTrigger" aria-label="open command palette">
+                            <span>/ search</span>
+                        </button>
+                    </nav>
                 </div>
             </div>
         </header>
 
-        <!-- Navigation -->
-        <nav class="nav">
-            <button class="nav-btn active" data-section="major"><span>Major Projects</span></button>
-            <button class="nav-btn" data-section="minor"><span>Minor Projects</span></button>
-        </nav>
+        <!-- Tech ticker -->
+        <div class="ticker" aria-hidden="true">
+            <div class="ticker-track" id="ticker"></div>
+        </div>
 
-        <!-- Main Content -->
-        <main class="main">
-            <!-- Projects Section - "The Tapestry" -->
-            <section class="projects-section" id="major">
-                <h2 class="section-title">The Tapestry - Major Projects</h2>
-                <div class="projects-masonry" id="major-projects">
-                    <!-- Projects will be loaded dynamically -->
-                </div>
-            </section>
+        <!-- Projects -->
+        <section class="projects" id="projects" aria-label="projects">
+            <h2 class="section-title">$ ls ./projects<span class="caret">_</span></h2>
+            <div class="grid" id="grid"></div>
 
-            <section class="projects-section hidden" id="minor">
-                <h2 class="section-title">The Tapestry - Minor Projects</h2>
-                <div class="projects-masonry" id="minor-projects">
-                    <!-- Projects will be loaded dynamically -->
-                </div>
-            </section>
-        </main>
+            <noscript>
+                <ul class="noscript-list">
+                    <li><a href="https://lumenfx.dev">Lumen</a> - markup-first UI framework for native desktop apps</li>
+                    <li><a href="https://locusmath.org">LocusMath</a> - competitive math platform with ELO ranking</li>
+                    <li><a href="https://github.com/FizzWizZleDazzle/Drift">Drift</a> - lightweight 2D game engine in C++20</li>
+                    <li><a href="https://github.com/FizzWizZleDazzle/Chessus">Chessus</a> - chess engine in C with NNUE evaluation</li>
+                    <li><a href="https://github.com/TrainPioneers/Tensor-Frame">Tensor-Frame</a> - PyTorch-like tensor library for Rust</li>
+                    <li><a href="https://github.com/FizzWizZleDazzle/bevy_ufbx">bevy_ufbx</a> - FBX asset loader for Bevy</li>
+                    <li><a href="https://symengine.fizzwizzledazzle.dev/">symengine.js</a> - SymEngine compiled to WebAssembly</li>
+                    <li><a href="https://github.com/FizzWizZleDazzle/FastIO">FastIO</a> - fast Java I/O for competitive programming</li>
+                </ul>
+            </noscript>
+        </section>
 
-        <!-- Project Modal -->
-        <div class="modal-overlay" id="projectModal">
-            <div class="modal-content">
-                <button class="modal-close" id="modalClose">&times;</button>
-                <div class="modal-body" id="modalBody">
-                    <!-- Modal content will be populated dynamically -->
-                </div>
+        <footer class="footer">
+            <span>built by hand &middot; artisanal free-range html, no framework was harmed &middot; <span id="year"></span></span>
+            <span class="foot-right">
+                <span class="kbd-hint">press <kbd>/</kbd> to search</span>
+                <a href="https://github.com/FizzWizZleDazzle/FizzWizZleDazzle" target="_blank" rel="noopener">source</a>
+            </span>
+        </footer>
+    </div>
+
+    <!-- Project modal -->
+    <div class="modal" id="modal" role="dialog" aria-modal="true" aria-hidden="true">
+        <div class="modal-box" id="modalBox">
+            <div class="titlebar">
+                <span class="dots"><i></i><i></i><i></i></span>
+                <span class="title" id="modalFile">project.md</span>
+                <button class="modal-x" id="modalClose" aria-label="close">[x]</button>
             </div>
+            <div class="modal-body" id="modalBody"></div>
         </div>
     </div>
+
+    <!-- Command palette -->
+    <div class="palette" id="palette" role="dialog" aria-modal="true" aria-hidden="true" aria-label="command palette">
+        <div class="palette-box">
+            <div class="palette-input-row">
+                <span class="palette-prompt">&gt;</span>
+                <input id="paletteInput" class="palette-input" type="text" placeholder="search projects, actions..." autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="search">
+            </div>
+            <ul class="palette-list" id="paletteList"></ul>
+            <div class="palette-hint"><kbd>up</kbd><kbd>down</kbd> move &middot; <kbd>enter</kbd> open &middot; <kbd>esc</kbd> close</div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast" role="status" aria-live="polite" aria-hidden="true"></div>
 
     <script type="module" src="/src/script.ts"></script>
 </body>

@@ -1,25 +1,17 @@
-<h1 align="center">Hi there 👋, I'm FizzWizZleDazzle</h1>
+### fizzwizzledazzle
 
----
+Systems and tools developer. Game-engine tooling, desktop-first apps, and
+low-level libraries. Mostly Rust and C++, close to the metal.
 
-### About Me
+**Projects**
 
-- Currently building **game engine tools** and **desktop-first apps**
-- Interested in **Rust**, **GTK**, and **modern graphics systems**
-- Love clean UI/UX, powerful low-level tooling, and solving hard problems
-- Fun fact: I hate bloatware and *love* minimal, efficient systems
+- [Lumen](https://lumenfx.dev) - markup-first UI framework for native desktop apps ([source](https://github.com/lumen-fx/lumen))
+- [LocusMath](https://locusmath.org) - competitive math platform with ELO ranking
+- [Drift](https://github.com/FizzWizZleDazzle/Drift) - lightweight 2D game engine in C++20
+- [Chessus](https://github.com/FizzWizZleDazzle/Chessus) - chess engine in C with NNUE evaluation
+- [Tensor-Frame](https://github.com/TrainPioneers/Tensor-Frame) - PyTorch-like tensor library for Rust ([site](https://trainpioneers.github.io/Tensor-Frame/))
+- [bevy_ufbx](https://github.com/FizzWizZleDazzle/bevy_ufbx) - FBX asset loader for Bevy
+- [symengine.js](https://symengine.fizzwizzledazzle.dev/) - SymEngine compiled to WebAssembly
+- [FastIO](https://github.com/FizzWizZleDazzle/FastIO) - fast Java I/O for competitive programming
 
----
-
-### How to Reach Me
-
-- DM me on GitHub, Discord (username: atrur) or open an issue in any of my repos
-- Feel free to fork or contribute to anything I build!
-
----
-
-<p align="center">
-  <em>“The simpler it looks, the deeper the craft.”</em>
-  <br></br>
-  <em>“JavaScript is a mistake. TypeScript is the apology. Accept it, but only on the web.”</em>
-</p>
+[fizzwizzledazzle.github.io](https://fizzwizzledazzle.github.io) &middot; hello@fizzwizzledazzle.dev

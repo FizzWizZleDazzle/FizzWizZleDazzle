@@ -1,7 +1,7 @@
 {
   "name": "fizzwizzledazzle",
   "version": "1.0.0",
-  "description": "FizzWizZleDazzle Portfolio - A digital weaver's interactive portfolio built with TypeScript",
+  "description": "FizzWizZleDazzle portfolio - a pixel/retro developer portfolio built with TypeScript and Vite",
   "main": "src/script.ts",
   "type": "module",
   "scripts": {

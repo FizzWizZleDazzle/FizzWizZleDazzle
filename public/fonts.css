@@ -1,0 +1,18 @@
+/* Self-hosted fonts. The .woff2 files are fetched at build time
+   (see .github/workflows/deploy.yml) and are not committed. */
+
+@font-face {
+    font-family: 'Press Start 2P';
+    src: url('fonts/press-start-2p.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'VT323';
+    src: url('fonts/vt323.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}

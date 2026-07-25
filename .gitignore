@@ -35,3 +35,6 @@ Thumbs.db
 *.temp
 favicon-*.png
 avatar.png
+
+# Fonts fetched at build time (see deploy workflow)
+public/fonts/*.woff2

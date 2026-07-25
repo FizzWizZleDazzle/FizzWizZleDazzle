@@ -34,7 +34,13 @@ jobs:
           
       - name: Install dependencies
         run: npm ci
-        
+
+      - name: Fetch self-hosted fonts
+        run: |
+          mkdir -p public/fonts
+          curl -sfL "https://cdn.jsdelivr.net/npm/@fontsource/press-start-2p@5/files/press-start-2p-latin-400-normal.woff2" -o public/fonts/press-start-2p.woff2
+          curl -sfL "https://cdn.jsdelivr.net/npm/@fontsource/vt323@5/files/vt323-latin-400-normal.woff2" -o public/fonts/vt323.woff2
+
       - name: Build TypeScript and bundle
         run: npm run build
         
