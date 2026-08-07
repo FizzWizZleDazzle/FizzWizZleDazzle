@@ -14,4 +14,4 @@ low-level libraries. Mostly Rust and C++, close to the metal.
 - [symengine.js](https://symengine.fizzwizzledazzle.dev/) - SymEngine compiled to WebAssembly
 - [FastIO](https://github.com/FizzWizZleDazzle/FastIO) - fast Java I/O for competitive programming
 
-[fizzwizzledazzle.github.io](https://fizzwizzledazzle.github.io) &middot; hello@fizzwizzledazzle.dev
+[https://fizzwizzledazzle.dev/](https://fizzwizzledazzle.dev/) hello@fizzwizzledazzle.dev
